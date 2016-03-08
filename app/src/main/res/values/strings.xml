@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">HackeoUrbano</string>
+
+    <!-- TITLES -->
+    <string name="section_name_home">HackeoUrbano</string>
+    <string name="section_name_ranking">Ranking</string>
+    <string name="section_name_info">Información</string>
+
+    <!-- GENERIC -->
+    <string name="app_error">Error</string>
+    <string name="app_retry">Reintentar</string>
+    <string name="send">ENVIAR</string>
+    <string name="no">No</string>
+    <string name="yes">Sí</string>
+
+    <!-- APP ERRORS -->
+    <string name="app_location_unavailable">Fue imposible obtener la ubicación geográfica del dispositivo</string>
+    <string name="app_location_suspended">Se suspendió la conexión para obtener la geolocalización</string>
+    <string name="app_location_failed">No se pudo conectar al servicio de geolocalización</string>
+
+    <string name="generic_server_error_message">No fue posible procesar la petición, intente de nuevo más tarde</string>
+    <string name="generic_error_message">No fue posible realizar la petición</string>
+
+    <!-- NAVDRAWER -->
+    <string name="drawer_open">Abrir Menú</string>
+    <string name="drawer_close">Cerrar Menú</string>
+
+    <string name="app_nav_item_1">Recorridos</string>
+    <string name="app_nav_item_2">Ranking</string>
+    <string name="app_nav_item_3">Información</string>
+
+</resources>

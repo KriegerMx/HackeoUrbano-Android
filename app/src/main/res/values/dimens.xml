@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="app_vertical_padding_text_big">30dp</dimen>
+    <dimen name="app_vertical_padding_text_medium">24dp</dimen>
+    <dimen name="app_vertical_padding_text_small">8dp</dimen>
+    <dimen name="app_vertical_padding_text_smallest">4dp</dimen>
+
+    <dimen name="app_keyline_text_smallest">10dp</dimen>
+    <dimen name="app_keyline_text_small">16dp</dimen>
+    <dimen name="app_keyline_text_medium">24dp</dimen>
+    <dimen name="app_keyline_text_big">32dp</dimen>
+
+    <dimen name="app_dialog_padding_content">24dp</dimen>
+    <dimen name="app_dialog_padding_buttons">16dp</dimen>
+    <dimen name="app_dialog_padding_list_row_vertical">12dp</dimen>
+    <dimen name="app_dialog_padding_buttons_inner_vertical">16dp</dimen>
+
+    <dimen name="app_text_biggest">70dp</dimen>
+    <dimen name="app_text_bigger">24dp</dimen>
+    <dimen name="app_text_big">18sp</dimen>
+    <dimen name="app_text_medium">16sp</dimen>
+    <dimen name="app_text_small">14sp</dimen>
+    <dimen name="app_text_smallest">12sp</dimen>
+
+    <dimen name="app_btn_solid_padding_vertical">10dp</dimen>
+    <dimen name="app_btn_solid_padding_horizontal">16dp</dimen>
+
+    <dimen name="app_drawer_header_padding_top">0dp</dimen>
+</resources>

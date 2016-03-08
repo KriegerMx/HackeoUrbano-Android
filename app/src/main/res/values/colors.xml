@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="app_primary_solid">#EF5350</color>
+    <color name="app_primary_transparent">#7FEF5350</color>
+    <color name="app_menu_solid">#c62828</color>
+    <color name="app_accent_primary_solid">#26A69A</color>
+    <color name="app_accent_secondary_solid">#FBC02E</color>
+
+    <color name="app_bg_light">#FFFFFF</color>
+    <color name="app_bg_navdrawer">#FFFFFF</color>
+    <color name="app_bg_white">#FFF</color>
+    <color name="app_bg_gray">#DADADA</color>
+    <color name="app_bg_light_gray">#F0F0F0</color>
+
+    <color name="app_title_light">#ffffff</color>
+    <color name="app_title_dark">#000</color>
+    <color name="app_txt_light">#ffffff</color>
+    <color name="app_txt_dark">#727272</color>
+    <color name="app_txt_hint_light">#8f8f8f</color>
+    <color name="app_txt_subtle_dark">#aaa</color>
+    <color name="transparent">#00FFFFFF</color>
+
+    <color name="app_bg_divider">#DADADA</color>
+    <color name="map_overlay_bg">#8FFFFFFF</color>
+    <color name="act_dependency_detail_header_bg">#eee</color>
+
+    <drawable name="app_click_selector_light_pressed">#66999999</drawable>
+    <drawable name="app_click_selector_dark_pressed">#66ffffff</drawable>
+    <drawable name="app_click_selector_unpressed">#00000000</drawable>
+</resources>

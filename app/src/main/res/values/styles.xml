@@ -1,0 +1,268 @@
+<resources>
+
+    <!-- Base application theme. -->
+
+    <style name="BaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/app_primary_solid</item>
+        <item name="colorPrimaryDark">@color/app_menu_solid</item>
+        <item name="colorAccent">@color/app_accent_primary_solid</item>
+
+        <item name="android:windowBackground">@color/app_bg_white</item>
+        <item name="android:spinnerStyle">@style/Widget.AppCompat.Spinner.Underlined</item>
+        <item name="android:textViewStyle">@style/Text_Simple</item>
+    </style>
+
+    <style name="AppTheme" parent="BaseTheme">
+    </style>
+
+    <style name="AppTheme.WithDrawer">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.WithDrawer.MainActivity">
+    </style>
+
+    <!-- APP BAR STYLES -->
+
+    <style name="AppBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:textColorPrimary">@color/app_title_light</item>
+        <item name="colorControlNormal">@color/app_accent_secondary_solid</item>
+    </style>
+
+    <style name="ProfileTitle_Expanded" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@android:color/transparent</item>
+    </style>
+
+    <!-- TEXT STYLES -->
+
+    <style name="Text_Simple" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/app_txt_dark</item>
+        <item name="android:textSize">@dimen/app_text_medium</item>
+    </style>
+
+    <style name="Text_Content" parent="Text_Simple">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">@dimen/app_vertical_padding_text_medium</item>
+        <item name="android:paddingBottom">@dimen/app_vertical_padding_text_medium</item>
+        <item name="android:paddingLeft">@dimen/app_keyline_text_small</item>
+        <item name="android:paddingRight">@dimen/app_keyline_text_small</item>
+    </style>
+
+    <style name="Text_Content.NoLateralPadding">
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingRight">0dp</item>
+    </style>
+
+    <style name="Text_Content.NoLateralPadding.SmallPadding">
+        <item name="android:paddingTop">@dimen/app_vertical_padding_text_small</item>
+        <item name="android:paddingBottom">@dimen/app_vertical_padding_text_small</item>
+    </style>
+
+    <style name="Text_Content.Clickable">
+        <item name="android:textColor">@color/app_accent_primary_solid</item>
+        <item name="android:paddingTop">@dimen/app_vertical_padding_text_small</item>
+        <item name="android:paddingBottom">@dimen/app_vertical_padding_text_small</item>
+    </style>
+
+    <style name="Title_Label">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/app_title_dark</item>
+        <item name="android:textSize">18dp</item>
+    </style>
+
+    <style name="Title">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/app_title_dark</item>
+        <item name="android:layout_marginBottom">@dimen/app_keyline_text_small</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Title.Accented">
+        <item name="android:textColor">@color/app_accent_primary_solid</item>
+    </style>
+
+    <style name="Title.Accented.Category">
+        <item name="android:textStyle">normal</item>
+    </style>
+    <style name="Title.Formality">
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">@dimen/app_text_medium</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingLeft">@dimen/app_keyline_text_small</item>
+        <item name="android:paddingRight">@dimen/app_keyline_text_small</item>
+    </style>
+    <style name="Title.Formality.Small">
+        <item name="android:textSize">@dimen/app_text_small</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:paddingTop">@dimen/app_keyline_text_small</item>
+    </style>
+
+
+    <style name="Title.Light">
+        <item name="android:textColor">@color/app_title_light</item>
+    </style>
+
+    <style name="Text_Dialog_Title">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">@dimen/app_dialog_padding_content</item>
+        <item name="android:drawablePadding">10dp</item>
+        <item name="android:textColor">@color/app_title_dark</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">@dimen/app_text_medium</item>
+    </style>
+
+    <style name="Text_Dialog_Label">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/app_title_dark</item>
+        <item name="android:textSize">@dimen/app_text_medium</item>
+    </style>
+
+    <style name="Text_Dialog_Label.WithPadding">
+        <item name="android:paddingLeft">@dimen/app_dialog_padding_content</item>
+        <item name="android:paddingRight">@dimen/app_dialog_padding_content</item>
+        <item name="android:paddingBottom">@dimen/app_dialog_padding_content</item>
+    </style>
+
+    <style name="Text_Dialog_Title.Circular">
+        <item name="android:textSize">16dp</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:ellipsize">none</item>
+        <item name="android:textColor">@color/app_title_dark</item>
+        <item name="android:layout_marginBottom">@dimen/app_dialog_padding_content</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="Button_Dialog_Accent">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">@dimen/app_dialog_padding_buttons_inner_vertical</item>
+        <item name="android:paddingBottom">@dimen/app_dialog_padding_buttons_inner_vertical</item>
+        <item name="android:paddingLeft">@dimen/app_dialog_padding_buttons</item>
+        <item name="android:paddingRight">@dimen/app_dialog_padding_buttons</item>
+        <item name="android:textColor">@color/app_accent_primary_solid</item>
+        <!--<item name="android:background">@drawable/bg_clickable_element</item>-->
+        <item name="android:gravity">center</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:typeface">sans</item>
+        <item name="android:textSize">@dimen/app_text_small</item>
+    </style>
+
+    <style name="Button_Dialog_Normal" parent="Button_Dialog_Accent">
+        <item name="android:textColor">@color/app_txt_dark</item>
+    </style>
+
+    <!-- CONTAINERS -->
+
+    <style name="Container_Dialog_Buttons">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_horizontal|right</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingLeft">@dimen/app_dialog_padding_buttons</item>
+        <item name="android:paddingRight">@dimen/app_dialog_padding_buttons</item>
+        <item name="android:paddingBottom">@dimen/app_dialog_padding_buttons</item>
+    </style>
+
+    <style name="ScrollView_Dialog">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginLeft">@dimen/app_dialog_padding_content</item>
+        <item name="android:layout_marginRight">@dimen/app_dialog_padding_content</item>
+        <item name="android:layout_marginBottom">@dimen/app_dialog_padding_content</item>
+        <item name="android:fillViewport">true</item>
+    </style>
+
+
+
+    <style name="ScrollView_Formality">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:fillViewport">true</item>
+        <item name="android:background">@color/app_bg_gray</item>
+    </style>`
+
+    <!-- WIDGETS -->
+    <style name="NonSolid_Button">
+        <item name="android:textColor">@color/app_accent_primary_solid</item>
+        <!--<item name="android:background">@drawable/bg_clickable_element</item>-->
+        <item name="android:gravity">center</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:minHeight">0dip</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:typeface">sans</item>
+        <item name="android:textSize">@dimen/app_text_small</item>
+    </style>
+
+    <style name="EditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/app_text_medium</item>
+        <item name="android:textColorHint">@color/app_txt_hint_light</item>
+    </style>
+
+    <style name="EditText.Form">
+        <item name="android:maxLines">1</item>
+        <item name="android:maxLength">90</item>
+    </style>
+
+    <style name="EditText.Blank">
+        <item name="colorControlNormal">@color/transparent</item>
+        <item name="colorControlActivated">@color/transparent</item>
+    </style>
+
+    <style name="SimpleText">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/app_txt_dark</item>
+        <item name="android:paddingLeft">@dimen/app_keyline_text_medium</item>
+        <item name="android:textSize">@dimen/app_text_small</item>
+    </style>
+
+    <style name="Toolbar_Custom_Simple">
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:background">?attr/colorPrimary</item>
+    </style>
+
+    <style name="CircularProgressView">
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="CircularProgressView.CenterTop">
+        <item name="android:layout_marginTop">@dimen/app_keyline_text_medium</item>
+        <item name="android:layout_centerHorizontal">true</item>
+    </style>
+
+    <style name="EditText.Simple">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:lines">1</item>
+        <item name="android:imeOptions">actionDone</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="LargeLine">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/app_bg_divider</item>
+        <item name="android:layout_marginLeft">-12dp</item>
+        <item name="android:layout_marginRight">-12dp</item>
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingRight">0dp</item>
+    </style>
+</resources>

@@ -1,0 +1,65 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/frag_home_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentTop="true"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/AppBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+    <FrameLayout
+        android:layout_below="@id/frag_home_toolbar"
+        android:id="@+id/frag_home_container_map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <fragment
+            android:id="@+id/frag_home_map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:name="com.google.android.gms.maps.SupportMapFragment" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/frag_home_toolbar"
+        android:orientation="vertical"
+        android:id="@+id/frag_home_container_list"
+        android:background="@color/app_bg_white">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/app_txt_hint_light"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:padding="@dimen/app_keyline_text_small"
+            android:background="@drawable/bg_clickable_element"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:id="@+id/frag_home_toggle_list"
+            android:clickable="true"
+            android:orientation="horizontal">
+            <TextView
+                android:text="Recorridos"
+                android:drawablePadding="@dimen/app_keyline_text_small"
+                android:layout_width="0dp"
+                android:gravity="center_vertical"
+                android:clickable="false"
+                android:layout_weight="1"
+                style="@style/Title_Label" />
+            <!--<ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/frag_home_toggle_icon"
+                android:src="@drawable/ic_more"/>-->
+        </LinearLayout>
+        <mx.krieger.internal.commons.androidutils.view.AsyncTaskRecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/frag_home_atrv"/>
+    </LinearLayout>
+</RelativeLayout>
