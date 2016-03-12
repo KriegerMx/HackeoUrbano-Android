@@ -14,6 +14,9 @@
     <string name="yes">Sí</string>
 
     <!-- APP ERRORS -->
+    <string name="error_unknown">Error desconocido. La aplicación entró a un estado inválido.</string>
+    <string name="error_empty_list">El servidor devolvió una lista vacía</string>
+
     <string name="app_location_unavailable">Fue imposible obtener la ubicación geográfica del dispositivo</string>
     <string name="app_location_suspended">Se suspendió la conexión para obtener la geolocalización</string>
     <string name="app_location_failed">No se pudo conectar al servicio de geolocalización</string>

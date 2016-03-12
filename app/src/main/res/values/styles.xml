@@ -27,7 +27,7 @@
 
     <style name="AppBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:textColorPrimary">@color/app_title_light</item>
-        <item name="colorControlNormal">@color/app_accent_secondary_solid</item>
+        <item name="colorControlNormal">@color/app_menu_solid</item>
     </style>
 
     <style name="ProfileTitle_Expanded" parent="@android:style/TextAppearance">

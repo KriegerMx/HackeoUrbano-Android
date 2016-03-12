@@ -1,22 +1,15 @@
 package mx.krieger.hackeourbano.fragment;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.location.Location;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -24,26 +17,32 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.List;
 
-import mx.krieger.hackeourbano.Properties;
 import mx.krieger.hackeourbano.R;
 import mx.krieger.hackeourbano.adapter.GenericListAdapter;
+import mx.krieger.hackeourbano.object.UISimpleListElement;
+import mx.krieger.hackeourbano.utils.Properties;
+import mx.krieger.hackeourbano.utils.Utils;
+import mx.krieger.internal.commons.androidutils.adapter.UpdateableAdapter;
 import mx.krieger.internal.commons.androidutils.fragment.NavDrawerFragment;
 import mx.krieger.internal.commons.androidutils.view.AsyncTaskRecyclerView;
+import mx.krieger.labplc.clients.dashboardAPI.model.AreaWrapper;
+import mx.krieger.labplc.clients.dashboardAPI.model.GPSLocation;
+import mx.krieger.labplc.clients.dashboardAPI.model.TrailDetails;
 
 public class HomeFragment extends NavDrawerFragment implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks, //GoogleMap.OnCameraChangeListener,
-        GoogleApiClient.OnConnectionFailedListener, AsyncTaskRecyclerView.TaskEventHandler, View.OnClickListener {
-    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 100;
-
+        GoogleApiClient.OnConnectionFailedListener, AsyncTaskRecyclerView.TaskEventHandler, View.OnClickListener, GoogleMap.OnCameraChangeListener {
     private GoogleMap mMap;
 
     private GoogleApiClient mGoogleApiClient;
@@ -136,6 +135,8 @@ public class HomeFragment extends NavDrawerFragment implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setMyLocationEnabled(true);
+
+        mMap.setOnCameraChangeListener(this);
         UiSettings uiSettings = mMap.getUiSettings();
         uiSettings.setMyLocationButtonEnabled(true);
         uiSettings.setMapToolbarEnabled(false);
@@ -182,47 +183,53 @@ public class HomeFragment extends NavDrawerFragment implements OnMapReadyCallbac
     }
 
     @Override
+    public void onCameraChange(CameraPosition cameraPosition) {
+        if(mMap != null)
+            atrv.requestNewTaskUpdate(
+                    new AsyncTaskRecyclerView.TaskEventBundle(
+                            this,
+                            mMap.getProjection().getVisibleRegion().latLngBounds)
+            );
+
+    }
+
+    @Override
     public AsyncTaskRecyclerView.ResultBundle performTask(AsyncTask runningTask, Object input) {
         AsyncTaskRecyclerView.ResultBundle result = new AsyncTaskRecyclerView.ResultBundle(
-                null, null, R.drawable.img_error_placeholder);
+                null, null, 0);
         Context context;
         try {
             context = getContext();
             result = new AsyncTaskRecyclerView.ResultBundle(
-                    getString(R.string.error_unknown), null, R.drawable.img_error_placeholder);
-
-            while(mLastLocation == null && !locationUnavailable && !runningTask.isCancelled()){
-                Log.d("HackeoUrbano", "Waiting for user location...");
-                Thread.sleep(1000);
-            }
+                    getString(R.string.error_unknown), null, 0);
 
             ArrayList<UISimpleListElement> data = new ArrayList<>();
-            for (int i = 0, size = formality.getOffices().size(); i < size; i++) {
-                FormalityElement.DetailOffice mCurrent = formality.getOffices().get(i);
-                UISimpleListElement element = new UISimpleListElement();
-                element.type = UISimpleListElement.TYPE_OFFICE;
-                element.title = mCurrent.name;
-                String distance = getString(R.string.act_dependencies_error_distance_calc);
-
-                if (!locationUnavailable && mLastLocation!=null) {
-                    float[] results = new float[1];
-                    Location.distanceBetween(mLastLocation.getLatitude(), mLastLocation.getLongitude(), mCurrent.latitude, mCurrent.longitude, results);
-                    element.helperElement = results[0];
-                    if(element.helperElement > 0){
-                        if(element.helperElement > 999){
-                            distance = String.format("%.2f", element.helperElement/1000) + " km";
-                        }else {
-                            distance = String.format("%.2f", element.helperElement) + " metros";
-                        }
-                    }
-                }
-                element.description = distance;
-                element.data = mCurrent;
-                data.add(element);
+            if(input == null){
+                result.shouldShowErrorIfEmpty = false;
+                result.data = data;
+                return result;
             }
 
-            if (!locationUnavailable && mLastLocation!=null)
-                Collections.sort(data, new DistanceComparator());
+            LatLngBounds bounds = (LatLngBounds) input;
+            AreaWrapper area = new AreaWrapper();
+            GPSLocation nePoint = new GPSLocation();
+            nePoint.setLatitude(bounds.northeast.latitude);
+            nePoint.setLongitude(bounds.northeast.longitude);
+            area.setNorthEastCorner(nePoint);
+            GPSLocation swPoint = new GPSLocation();
+            nePoint.setLatitude(bounds.southwest.latitude);
+            nePoint.setLongitude(bounds.southwest.longitude);
+            area.setSouthWestCorner(swPoint);
+            List<TrailDetails> trails = Utils.getMapatonPublicAPI().trailsNearPoint(area).execute().getItems();
+
+            for(TrailDetails trail : trails){
+                UISimpleListElement element = new UISimpleListElement();
+                element.title = trail.getOriginStationName() + " - " + trail.getDestinationStationName();
+                if (trail.getBranchName() != null)
+                    element.title += (" (" + trail.getBranchName() + ")");
+                element.id = trail.getTrailId();
+                data.add(element);
+            }
 
             if (data.size() == 0) {
                 result.errorMessage = context.getString(R.string.error_empty_list);
@@ -238,29 +245,29 @@ public class HomeFragment extends NavDrawerFragment implements OnMapReadyCallbac
     }
 
     @Override
-    public RecyclerView.Adapter buildAdapter(ArrayList<?> dataFromSuccessfulTask) {
-        return new GenericListAdapter((ArrayList<UISimpleList>)dataFromSuccessfulTask, this);
+    public UpdateableAdapter buildAdapter(ArrayList<?> dataFromSuccessfulTask) {
+        return new GenericListAdapter((ArrayList<UISimpleListElement>) dataFromSuccessfulTask, this);
     }
 
     @Override
     public void onClick(View v) {
         Object tag = v.getTag();
         switch (v.getId()){
-            case R.id.act_dependencies_toggle_list:
+            case R.id.frag_home_toggle_list:
                 boolean isOpened = tag != null && (boolean) tag;
                 if(isOpened){
-                    ivToggle.setImageResource(R.drawable.ic_more);
+                    //ivToggle.setImageResource(R.drawable.ic_more);
                     listContainer.animate().translationY(listHeight).setDuration(Properties.ANIMATION_DURATION).start();
                 }else{
-                    ivToggle.setImageResource(R.drawable.ic_less);
+                    //ivToggle.setImageResource(R.drawable.ic_less);
                     listContainer.animate().translationY(0).setDuration(Properties.ANIMATION_DURATION).start();
                 }
                 v.setTag(!isOpened);
                 break;
-            case R.id.view_list_office:
+            /*case R.id.view_list_office:
                 FormalityElement.DetailOffice office = (FormalityElement.DetailOffice) ((UISimpleListElement) tag).data;
                 goToDependencyDetail(office);
-                break;
+                break;*/
         }
     }
 }

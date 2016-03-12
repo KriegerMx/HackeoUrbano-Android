@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/view_list_category"
+    android:background="@drawable/bg_clickable_element">
+    <TextView
+        android:id="@+id/view_list_category_tv_title"
+        android:padding="@dimen/app_keyline_text_small"
+        android:layout_margin="0dp"
+        style="@style/Title.Accented.Category" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/app_bg_divider"/>
+</LinearLayout>

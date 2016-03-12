@@ -6,9 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import mx.krieger.hackeourbano.R;
+import java.util.ArrayList;
 
-public class GenericListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+import mx.krieger.hackeourbano.R;
+import mx.krieger.hackeourbano.object.UISimpleListElement;
+import mx.krieger.internal.commons.androidutils.adapter.UpdateableAdapter;
+
+public class GenericListAdapter extends UpdateableAdapter<RecyclerView.ViewHolder> {
     private ArrayList<UISimpleListElement> mData;
     private View.OnClickListener listener;
 
@@ -39,6 +43,12 @@ public class GenericListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public int getItemCount() {
         return mData.size();
+    }
+
+    @Override
+    public void updateDataset(ArrayList<?> arrayList) {
+        this.mData = (ArrayList<UISimpleListElement>) arrayList;
+        notifyDataSetChanged();
     }
 
     private class CategoryViewHolder extends RecyclerView.ViewHolder {

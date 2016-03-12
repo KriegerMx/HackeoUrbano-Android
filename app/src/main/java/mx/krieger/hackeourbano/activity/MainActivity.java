@@ -1,4 +1,4 @@
-package mx.krieger.hackeourbano;
+package mx.krieger.hackeourbano.activity;
 
 import android.Manifest;
 import android.content.Context;
