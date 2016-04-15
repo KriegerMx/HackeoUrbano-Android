@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">HackeoUrbano</string>
 
+    <!-- API VALUES -->
+    <string name="api_common_exception_package_name">mx.krieger.internal.apicommons.exceptions</string>
+    <string name="api_mapaton_exception_package_name">mx.krieger.labplc.mapaton.commons.exceptions</string>
+    <string name="commons_exception_package_name">mx.krieger.internal.commons.exceptions</string>
+
     <!-- TITLES -->
     <string name="section_name_home">HackeoUrbano</string>
     <string name="section_name_ranking">Ranking</string>
@@ -14,15 +19,17 @@
     <string name="yes">Sí</string>
 
     <!-- APP ERRORS -->
-    <string name="error_unknown">Error desconocido. La aplicación entró a un estado inválido.</string>
     <string name="error_empty_list">El servidor devolvió una lista vacía</string>
 
     <string name="app_location_unavailable">Fue imposible obtener la ubicación geográfica del dispositivo</string>
     <string name="app_location_suspended">Se suspendió la conexión para obtener la geolocalización</string>
     <string name="app_location_failed">No se pudo conectar al servicio de geolocalización</string>
 
-    <string name="generic_server_error_message">No fue posible procesar la petición, intente de nuevo más tarde</string>
-    <string name="generic_error_message">No fue posible realizar la petición</string>
+    <string name="error_connection">Problema de conexión al servidor, comprueba que tu dispositivo está conectado a Internet e intenta de nuevo.</string>
+    <string name="error_internal_server">Error interno de servidor.</string>
+    <string name="error_generic_asynctask">Error de escritura en memoria o interpretación de datos.</string>
+    <string name="error_unknown">Error desconocido. La aplicación entró a un estado inválido.</string>
+    <string name="error_code">"Error de conexión al servidor. Se devolvió el siguiente código de error: "</string>
 
     <!-- NAVDRAWER -->
     <string name="drawer_open">Abrir Menú</string>
@@ -31,5 +38,10 @@
     <string name="app_nav_item_1">Recorridos</string>
     <string name="app_nav_item_2">Ranking</string>
     <string name="app_nav_item_3">Información</string>
+    <string name="frag_home_toggle_text_loading">Cargando recorridos...</string>
+    <string name="frag_home_toggle_text_preffix">Recorridos encontrados:</string>
+    <string name="frag_home_btn_reload">Buscar en esta zona</string>
+    <string name="error_zoom_too_low">El área de búsqueda es demasiado amplia, haz zoom para cargar los recorridos de una zona.</string>
+    <string name="error_map_has_not_loaded">Por favor espera a que termine de cargar el mapa e intenta de nuevo</string>
 
 </resources>

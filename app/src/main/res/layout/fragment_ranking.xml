@@ -11,24 +11,9 @@
         android:background="?attr/colorPrimary"
         android:theme="@style/AppBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
-    <ScrollView
+    <mx.krieger.internal.commons.androidutils.view.AsyncTaskRecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/frag_ranking_toolbar">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/frag_ranking_linear_layout"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/app_keyline_text_small"
-                android:id="@+id/frag_ranking_tv"
-                android:autoLink="web"
-                android:textColor="@color/app_title_dark"
-                android:textSize="@dimen/app_text_big"/>
-        </LinearLayout>
-    </ScrollView>
+        android:layout_below="@id/frag_ranking_toolbar"
+        android:id="@+id/frag_ranking_atrv"/>
 </RelativeLayout>

@@ -5,11 +5,12 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -17,13 +18,15 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,26 +39,25 @@ import mx.krieger.hackeourbano.utils.Utils;
 import mx.krieger.internal.commons.androidutils.adapter.UpdateableAdapter;
 import mx.krieger.internal.commons.androidutils.fragment.NavDrawerFragment;
 import mx.krieger.internal.commons.androidutils.view.AsyncTaskRecyclerView;
-import mx.krieger.labplc.clients.dashboardAPI.model.AreaWrapper;
-import mx.krieger.labplc.clients.dashboardAPI.model.GPSLocation;
-import mx.krieger.labplc.clients.dashboardAPI.model.TrailDetails;
+import mx.krieger.mapaton.clients.mapatonPublicAPI.model.NearTrails;
 
 public class HomeFragment extends NavDrawerFragment implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks, //GoogleMap.OnCameraChangeListener,
         GoogleApiClient.OnConnectionFailedListener, AsyncTaskRecyclerView.TaskEventHandler, View.OnClickListener, GoogleMap.OnCameraChangeListener {
-    private GoogleMap mMap;
+    private static final float MINIMUM_ZOOM = 15;
 
+    private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
     private AsyncTaskRecyclerView atrv;
     private View listContainer;
     private View listToggle;
-    private ImageView ivToggle;
     private int listHeight;
-    private int mapPadding;
-    private boolean locationUnavailable = false;
     private Toolbar toolbar;
     private boolean mapHasLoaded = false;
+    private TextView listToggleLabel;
+    private boolean firstTime = true;
+    private View btnSearchArea;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,8 +73,11 @@ public class HomeFragment extends NavDrawerFragment implements OnMapReadyCallbac
 
         listContainer = v.findViewById(R.id.frag_home_container_list);
         listToggle = v.findViewById(R.id.frag_home_toggle_list);
-        //ivToggle = (ImageView) v.findViewById(R.id.frag_home_toggle_icon);
+        listToggleLabel = (TextView) v.findViewById(R.id.frag_home_toggle_label);
+        btnSearchArea = v.findViewById(R.id.frag_home_btn_reload);
+
         listToggle.setOnClickListener(this);
+        btnSearchArea.setOnClickListener(this);
 
         atrv = (AsyncTaskRecyclerView) v.findViewById(R.id.frag_home_atrv);
         AsyncTaskRecyclerView.PlaceholderViewContainer ph = new AsyncTaskRecyclerView.PlaceholderViewContainer();
@@ -100,7 +105,6 @@ public class HomeFragment extends NavDrawerFragment implements OnMapReadyCallbac
             }
         });
 
-        mapPadding = (int) getResources().getDimension(R.dimen.app_keyline_text_small);
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.frag_home_map);
         mapFragment.getMapAsync(this);
@@ -140,6 +144,7 @@ public class HomeFragment extends NavDrawerFragment implements OnMapReadyCallbac
         UiSettings uiSettings = mMap.getUiSettings();
         uiSettings.setMyLocationButtonEnabled(true);
         uiSettings.setMapToolbarEnabled(false);
+        uiSettings.setZoomControlsEnabled(true);
 
         if(mLastLocation != null) {
             moveToUserLocation();
@@ -148,14 +153,13 @@ public class HomeFragment extends NavDrawerFragment implements OnMapReadyCallbac
     }
 
     private void moveToUserLocation() {
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()), 15));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()), 17));
     }
 
     @Override
     public void onConnected(Bundle bundle) {
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLastLocation == null) {
-            locationUnavailable = true;
             Toast.makeText(getContext(), R.string.app_location_unavailable, Toast.LENGTH_LONG).show();
         }else {
             if(mapHasLoaded){
@@ -166,13 +170,11 @@ public class HomeFragment extends NavDrawerFragment implements OnMapReadyCallbac
 
     @Override
     public void onConnectionSuspended(int i) {
-        locationUnavailable = true;
         Toast.makeText(getContext(), R.string.app_location_suspended, Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        locationUnavailable = true;
         Toast.makeText(getContext(), R.string.app_location_failed, Toast.LENGTH_LONG).show();
     }
 
@@ -184,13 +186,17 @@ public class HomeFragment extends NavDrawerFragment implements OnMapReadyCallbac
 
     @Override
     public void onCameraChange(CameraPosition cameraPosition) {
-        if(mMap != null)
-            atrv.requestNewTaskUpdate(
-                    new AsyncTaskRecyclerView.TaskEventBundle(
-                            this,
-                            mMap.getProjection().getVisibleRegion().latLngBounds)
-            );
-
+        if(mMap != null) {
+            if (firstTime) {
+                if(cameraPosition.zoom < MINIMUM_ZOOM){
+                    Toast.makeText(getContext(), R.string.error_zoom_too_low, Toast.LENGTH_LONG).show();
+                }else {
+                    reloadMapData();
+                    firstTime = false;
+                }
+            } else
+                showReloadButton();
+        }
     }
 
     @Override
@@ -210,42 +216,70 @@ public class HomeFragment extends NavDrawerFragment implements OnMapReadyCallbac
                 return result;
             }
 
-            LatLngBounds bounds = (LatLngBounds) input;
-            AreaWrapper area = new AreaWrapper();
-            GPSLocation nePoint = new GPSLocation();
-            nePoint.setLatitude(bounds.northeast.latitude);
-            nePoint.setLongitude(bounds.northeast.longitude);
-            area.setNorthEastCorner(nePoint);
-            GPSLocation swPoint = new GPSLocation();
-            nePoint.setLatitude(bounds.southwest.latitude);
-            nePoint.setLongitude(bounds.southwest.longitude);
-            area.setSouthWestCorner(swPoint);
-            List<TrailDetails> trails = Utils.getMapatonPublicAPI().trailsNearPoint(area).execute().getItems();
+            if(runningTask.isCancelled()) return result;
 
-            for(TrailDetails trail : trails){
-                UISimpleListElement element = new UISimpleListElement();
-                element.title = trail.getOriginStationName() + " - " + trail.getDestinationStationName();
-                if (trail.getBranchName() != null)
-                    element.title += (" (" + trail.getBranchName() + ")");
-                element.id = trail.getTrailId();
-                data.add(element);
+            LatLngBounds bounds = (LatLngBounds) input;
+            Log.d("DBG", "NE: " + bounds.northeast.latitude + " | " + bounds.northeast.longitude);
+            Log.d("DBG", "SW: " + bounds.southwest.latitude + " | " + bounds.southwest.longitude);
+
+            JSONObject sData = new JSONObject();
+            JSONObject neCorner = new JSONObject();
+            neCorner.put("latitude", bounds.northeast.latitude);
+            neCorner.put("longitude", bounds.northeast.longitude);
+            sData.put("northEastCorner", neCorner);
+            JSONObject swCorner = new JSONObject();
+            swCorner.put("latitude", bounds.southwest.latitude);
+            swCorner.put("longitude", bounds.southwest.longitude);
+            sData.put("southWestCorner", swCorner);
+
+            if(runningTask.isCancelled()) return result;
+
+            String stringResponse = Utils.doSimpleRequest(Utils.SERVICE_TRAILS_NEAR_POINT, sData);
+
+            if(runningTask.isCancelled()) return result;
+
+            JSONObject resultingData = new JSONObject(stringResponse);
+            JSONArray rawTrails = resultingData.getJSONArray("items");
+            List<NearTrails> trails = new ArrayList<>();
+            for(int i = 0, size = rawTrails.length(); i < size; i++){
+                JSONObject current = rawTrails.getJSONObject(i);
+                NearTrails temp = new NearTrails();
+                temp.setTrailId(current.getLong("trailId"));
+                temp.setOriginName(current.getString("originName"));
+                temp.setDestinationName(current.getString("destinationName"));
+                if(current.has("branchName"))
+                    temp.setBranchName(current.getString("branchName"));
+                trails.add(temp);
             }
 
-            if (data.size() == 0) {
+            if(runningTask.isCancelled()) return result;
+
+            if (trails.size() == 0) {
                 result.errorMessage = context.getString(R.string.error_empty_list);
             } else {
+                for(NearTrails trail : trails){
+                    UISimpleListElement element = new UISimpleListElement();
+                    element.title = trail.getOriginName() + " - " + trail.getDestinationName();
+                    if (trail.getBranchName() != null)
+                        element.title += (" (" + trail.getBranchName() + ")");
+                    element.id = trail.getTrailId();
+                    data.add(element);
+                }
                 result.data = data;
                 result.errorMessage = null;
             }
+
+            if(runningTask.isCancelled()) return result;
         } catch (Exception e) {
             e.printStackTrace();
-            result.errorMessage = getString(R.string.generic_server_error_message);
+            result.errorMessage = Utils.manageAPIException(getContext(), e);
         }
         return result;
     }
 
     @Override
     public UpdateableAdapter buildAdapter(ArrayList<?> dataFromSuccessfulTask) {
+        listToggleLabel.setText(getString(R.string.frag_home_toggle_text_preffix) + " " + dataFromSuccessfulTask.size());
         return new GenericListAdapter((ArrayList<UISimpleListElement>) dataFromSuccessfulTask, this);
     }
 
@@ -264,10 +298,31 @@ public class HomeFragment extends NavDrawerFragment implements OnMapReadyCallbac
                 }
                 v.setTag(!isOpened);
                 break;
-            /*case R.id.view_list_office:
-                FormalityElement.DetailOffice office = (FormalityElement.DetailOffice) ((UISimpleListElement) tag).data;
-                goToDependencyDetail(office);
-                break;*/
+            case R.id.frag_home_btn_reload:
+                if(mMap != null) {
+                    if (mMap.getCameraPosition().zoom < MINIMUM_ZOOM) {
+                        Toast.makeText(getContext(), R.string.error_zoom_too_low, Toast.LENGTH_LONG).show();
+                    } else {
+                        reloadMapData();
+                    }
+                }else {
+                    Toast.makeText(getContext(), R.string.error_map_has_not_loaded, Toast.LENGTH_LONG).show();
+                }
+                break;
         }
+    }
+
+    private void reloadMapData() {
+        btnSearchArea.setVisibility(View.GONE);
+        listToggleLabel.setText(R.string.frag_home_toggle_text_loading);
+        atrv.requestNewTaskUpdate(
+                new AsyncTaskRecyclerView.TaskEventBundle(
+                        this,
+                        mMap.getProjection().getVisibleRegion().latLngBounds)
+        );
+    }
+
+    private void showReloadButton(){
+        btnSearchArea.setVisibility(View.VISIBLE);
     }
 }

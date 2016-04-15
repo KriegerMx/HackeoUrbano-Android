@@ -27,6 +27,19 @@
             android:name="com.google.android.gms.maps.SupportMapFragment" />
     </FrameLayout>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/frag_home_btn_reload"
+        android:background="#AFFFFFFF"
+        android:padding="@dimen/app_keyline_text_smallest"
+        android:layout_centerHorizontal="true"
+        android:textStyle="bold"
+        android:textSize="@dimen/app_text_big"
+        android:layout_below="@id/frag_home_toolbar"
+        android:layout_marginTop="@dimen/app_keyline_text_small"
+        android:id="@+id/frag_home_btn_reload"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -48,11 +61,11 @@
             android:clickable="true"
             android:orientation="horizontal">
             <TextView
-                android:text="Recorridos"
                 android:drawablePadding="@dimen/app_keyline_text_small"
                 android:layout_width="0dp"
                 android:gravity="center_vertical"
                 android:clickable="false"
+                android:id="@+id/frag_home_toggle_label"
                 android:layout_weight="1"
                 style="@style/Title_Label" />
             <!--<ImageView
