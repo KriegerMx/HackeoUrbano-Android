@@ -1,6 +1,7 @@
 package mx.krieger.hackeourbano.utils;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -122,5 +123,21 @@ public class Utils {
             error = context.getString(R.string.error_connection);
         }
         return error;
+    }
+
+    public static int[] generateColorsByDividingSpectrum(int numOfColors){
+        int[] colors = new int[numOfColors];
+        float hueSegment = 360 / numOfColors;
+
+        for(int i = 0; i < numOfColors; i++){
+            float[] hsv = new float[3];
+
+            hsv[0] =  hueSegment * (i + 1); //HUE
+            hsv[1] =  0.70f; //SAT
+            hsv[2] =  0.95f; //VAL
+
+            colors[i] = Color.HSVToColor(hsv);
+        }
+        return colors;
     }
 }
