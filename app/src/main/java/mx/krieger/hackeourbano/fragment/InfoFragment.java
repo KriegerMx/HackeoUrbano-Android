@@ -31,7 +31,12 @@ public class InfoFragment extends NavDrawerFragment {
         }catch (Exception e){
             e.printStackTrace();
         }
-        String s = "<b>HackeoUrbano Versión: "+version+"</b><br>Este producto fue desarrollado por PIDES Innovación Social y Krieger durante HackeoUrbano";
+        String s = "<b>'Ruta de 10' Versión: "+version+"</b><br><br>'Ruta de 10' obtiene las rutas de transporte concesionado más cercanas a la ubicación del usuario y permite ver información detallada sobre ellas, así como calificarlas y proporcionar retroalimentación. Esta aplicación fue creada dentro de #HackeoUrbano y es alimentada mediante la API de la base de datos del transporte público concesionado de la Ciudad de México generada en Mapatón CDMX.";
+        s += "<br><br><b>Enlaces<b><br><br>";
+        s += "<a href=\"http://mapatoncd.mx/\">MapatonCDMX</a><br><br>";
+        s += "<a href=\"http://www.pidesinnovacion.org/hack/\">#HackeoUrbano</a><br><br>";
+        s += "<a href=\"http://www.pidesinnovacion.org/\">PIDES Innovación Social</a><br><br>";
+        s += "<a href=\"http://krieger.mx/\">Krieger</a><br><br>";
         ((TextView)v.findViewById(R.id.frag_info_tv)).setText(Html.fromHtml(s));
         return v;
     }

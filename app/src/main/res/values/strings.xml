@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HackeoUrbano</string>
+    <string name="app_name">Ruta de 10</string>
 
     <!-- API VALUES -->
     <string name="api_common_exception_package_name">mx.krieger.internal.apicommons.exceptions</string>
@@ -7,7 +7,7 @@
     <string name="commons_exception_package_name">mx.krieger.internal.commons.exceptions</string>
 
     <!-- TITLES -->
-    <string name="section_name_home">HackeoUrbano</string>
+    <string name="section_name_home">Ruta de 10</string>
     <string name="section_name_ranking">Ranking</string>
     <string name="section_name_info">Información</string>
 
@@ -43,5 +43,7 @@
     <string name="frag_home_btn_reload">Buscar en esta zona</string>
     <string name="error_zoom_too_low">El área de búsqueda es demasiado amplia, haz zoom para cargar los recorridos de una zona.</string>
     <string name="error_map_has_not_loaded">Por favor espera a que termine de cargar el mapa e intenta de nuevo</string>
+    <string name="error_obtain_trail">Falló la obtención de uno de los recorridos</string>
+    <string name="frag_home_toggle_label_placeholder">Aún no se ha seleccionado un área</string>
 
 </resources>

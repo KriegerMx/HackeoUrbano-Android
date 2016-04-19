@@ -32,6 +32,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -273,66 +274,79 @@ public class HomeFragment extends NavDrawerFragment implements OnMapReadyCallbac
             } else {
                 trailList = new ArrayList<>();
                 for(NearTrails trail : trails){
-                    UITrail uiTrail = new UITrail();
-                    uiTrail.id = trail.getTrailId();
-                    uiTrail.originName = trail.getOriginName();
-                    uiTrail.destinationName = trail.getDestinationName();
-                    uiTrail.branchName = trail.getBranchName();
+                    try {
+                        UITrail uiTrail = new UITrail();
+                        uiTrail.id = trail.getTrailId();
+                        uiTrail.originName = trail.getOriginName();
+                        uiTrail.destinationName = trail.getDestinationName();
+                        uiTrail.branchName = trail.getBranchName();
 
-                    UISimpleListElement element = new UISimpleListElement();
-                    element.title = uiTrail.originName + " - " + uiTrail.destinationName;
-                    if (uiTrail.branchName != null)
-                        element.title += (" (" + uiTrail.branchName + ")");
-                    element.id = uiTrail.id;
+                        UISimpleListElement element = new UISimpleListElement();
+                        element.title = uiTrail.originName + " - " + uiTrail.destinationName;
+                        if (uiTrail.branchName != null)
+                            element.title += (" (" + uiTrail.branchName + ")");
+                        element.id = uiTrail.id;
 
-                    List<UIPoint> points = getTrailPointsFromLocalStorage(context, uiTrail);
+                        if(runningTask.isCancelled()) return result;
 
-                    if(points.size() == 0){
-                        points = new ArrayList<>();
+                        List<UIPoint> points = getTrailPointsFromLocalStorage(context, uiTrail);
 
-                        //LOOP IN OTHER TO GET ALL POINTS
-                        MapatonPublicAPI mAPI = Utils.getMapatonPublicAPI();
-                        TrailPointsRequestParameter request = new TrailPointsRequestParameter();
-                        String serverCursor = null;
-                        boolean hasMorePoints = true;
-                        points = new ArrayList<>();
-                        while(hasMorePoints) {
-                            request.setCursor(serverCursor);
-                            request.setNumberOfElements(PAGE_SIZE);
-                            request.setTrailId(uiTrail.id);
-                            TrailPointsResult resp = mAPI.getTrailSnappedPoints(request).execute();
-                            List<TrailPointWrapper> newPoints = resp.getPoints();
+                        if(points.size() == 0){
+                            points = new ArrayList<>();
 
-                            if(newPoints != null) {
-                                for(TrailPointWrapper wrapper : newPoints) {
-                                    UIPoint point = new UIPoint(wrapper.getLocation().getLatitude(),
-                                            wrapper.getLocation().getLongitude());
-                                    points.add(point);
-                                }
-                                serverCursor = resp.getCursor();
-                                if(newPoints.size() < PAGE_SIZE)
+                            //LOOP IN OTHER TO GET ALL POINTS
+                            MapatonPublicAPI mAPI = Utils.getMapatonPublicAPI();
+                            TrailPointsRequestParameter request = new TrailPointsRequestParameter();
+                            String serverCursor = null;
+                            boolean hasMorePoints = true;
+                            points = new ArrayList<>();
+                            while(hasMorePoints) {
+                                request.setCursor(serverCursor);
+                                request.setNumberOfElements(PAGE_SIZE);
+                                request.setTrailId(uiTrail.id);
+                                TrailPointsResult resp = mAPI.getTrailSnappedPoints(request).execute();
+                                List<TrailPointWrapper> newPoints = resp.getPoints();
+
+                                if(newPoints != null) {
+                                    for(TrailPointWrapper wrapper : newPoints) {
+                                        UIPoint point = new UIPoint(wrapper.getLocation().getLatitude(),
+                                                wrapper.getLocation().getLongitude());
+                                        points.add(point);
+                                    }
+                                    serverCursor = resp.getCursor();
+                                    if(newPoints.size() < PAGE_SIZE)
+                                        hasMorePoints = false;
+                                }else
                                     hasMorePoints = false;
-                            }else
-                                hasMorePoints = false;
+                                if(runningTask.isCancelled()) return result;
+                            }
+
+                            //STORE ALL POINTS ON LOCAL DB
+                            PointDBOpenHelper dbHelper = new PointDBOpenHelper(context);
+                            SQLiteDatabase writableDatabase = dbHelper.getWritableDatabase();
+                            for(UIPoint point : points)
+                                storePointOnDB(writableDatabase, uiTrail.id, point);
+                            writableDatabase.close();
+                            dbHelper.close();
+                            if(runningTask.isCancelled()) return result;
                         }
+                        uiTrail.points = points;
+                        trailList.add(uiTrail);
+                        data.add(element);
 
-                        //STORE ALL POINTS ON LOCAL DB
-                        PointDBOpenHelper dbHelper = new PointDBOpenHelper(context);
-                        SQLiteDatabase writableDatabase = dbHelper.getWritableDatabase();
-                        for(UIPoint point : points)
-                            storePointOnDB(writableDatabase, uiTrail.id, point);
-                        writableDatabase.close();
-                        dbHelper.close();
+                        if(runningTask.isCancelled()) return result;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Toast.makeText(context, R.string.error_obtain_trail, Toast.LENGTH_SHORT).show();
                     }
-                    uiTrail.points = points;
-                    trailList.add(uiTrail);
-                    data.add(element);
                 }
-                result.data = data;
-                result.errorMessage = null;
+                if (trailList.size() == 0) {
+                    result.errorMessage = context.getString(R.string.error_empty_list);
+                } else {
+                    result.data = data;
+                    result.errorMessage = null;
+                }
             }
-
-            if(runningTask.isCancelled()) return result;
         } catch (Exception e) {
             e.printStackTrace();
             result.errorMessage = Utils.manageAPIException(getContext(), e);
