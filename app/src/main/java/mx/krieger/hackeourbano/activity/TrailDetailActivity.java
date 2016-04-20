@@ -1,12 +1,14 @@
 package mx.krieger.hackeourbano.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -80,6 +82,7 @@ public class TrailDetailActivity extends AppCompatActivity implements OnMapReady
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
+            setTitle(R.string.title_name_trail_detail);
 
             tvOrigin.setText("Origen: " + inputTrail.originName);
             tvDestination.setText("Destino: " + inputTrail.destinationName);
@@ -106,6 +109,16 @@ public class TrailDetailActivity extends AppCompatActivity implements OnMapReady
         if(task != null)
             task.cancel(true);
         super.onStop();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

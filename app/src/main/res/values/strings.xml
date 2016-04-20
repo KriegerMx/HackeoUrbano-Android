@@ -11,6 +11,8 @@
     <string name="section_name_ranking">Ranking</string>
     <string name="section_name_info">Información</string>
 
+    <string name="title_name_trail_detail">Detalle de Recorrido</string>
+
     <!-- GENERIC -->
     <string name="app_error">Error</string>
     <string name="app_retry">Reintentar</string>

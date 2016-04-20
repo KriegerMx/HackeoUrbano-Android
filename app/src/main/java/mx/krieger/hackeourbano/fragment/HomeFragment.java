@@ -2,6 +2,7 @@ package mx.krieger.hackeourbano.fragment;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.os.AsyncTask;
@@ -36,6 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mx.krieger.hackeourbano.R;
+import mx.krieger.hackeourbano.activity.TrailDetailActivity;
 import mx.krieger.hackeourbano.adapter.GenericListAdapter;
 import mx.krieger.hackeourbano.object.UIPoint;
 import mx.krieger.hackeourbano.object.UISimpleListElement;
@@ -49,8 +51,8 @@ import mx.krieger.internal.commons.androidutils.view.AsyncTaskRecyclerView;
 import mx.krieger.mapaton.clients.mapatonPublicAPI.model.NearTrails;
 
 public class HomeFragment extends NavDrawerFragment implements OnMapReadyCallback,
-        GoogleApiClient.ConnectionCallbacks, //GoogleMap.OnCameraChangeListener,
-        GoogleApiClient.OnConnectionFailedListener, AsyncTaskRecyclerView.TaskEventHandler, View.OnClickListener, GoogleMap.OnCameraChangeListener {
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
+        AsyncTaskRecyclerView.TaskEventHandler, View.OnClickListener, GoogleMap.OnCameraChangeListener {
     private static final float MINIMUM_ZOOM = 15;
 
     private GoogleMap mMap;
@@ -276,6 +278,8 @@ public class HomeFragment extends NavDrawerFragment implements OnMapReadyCallbac
 
                         UISimpleListElement element = new UISimpleListElement();
                         element.title = uiTrail.originName + " - " + uiTrail.destinationName;
+                        element.originName = uiTrail.originName;
+                        element.destinationName = uiTrail.destinationName;
                         if (uiTrail.branchName != null)
                             element.title += (" (" + uiTrail.branchName + ")");
                         element.id = uiTrail.id;
@@ -351,6 +355,12 @@ public class HomeFragment extends NavDrawerFragment implements OnMapReadyCallbac
                 }else {
                     Toast.makeText(getContext(), R.string.error_map_has_not_loaded, Toast.LENGTH_LONG).show();
                 }
+                break;
+            case R.id.view_list_simple:
+                UISimpleListElement input = (UISimpleListElement) tag;
+                Intent i = new Intent(getContext(), TrailDetailActivity.class);
+                i.putExtra(TrailDetailActivity.EXTRA_TRAIL, input);
+                startActivity(i);
                 break;
         }
     }
