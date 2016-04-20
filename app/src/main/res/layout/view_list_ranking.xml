@@ -3,13 +3,21 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/view_list_category"
+    android:id="@+id/view_list_ranking"
     android:background="@drawable/bg_clickable_element">
     <TextView
-        android:id="@+id/view_list_category_tv_title"
+        android:id="@+id/view_list_ranking_tv_title"
         android:padding="@dimen/app_keyline_text_small"
         android:layout_margin="0dp"
-        style="@style/Title.Accented.Category" />
+        android:textColor="@color/app_txt_dark"
+        style="@style/Title.Accented.ListElement" />
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/view_list_ranking_rb"
+        android:isIndicator="true"
+        android:stepSize="1"
+        android:layout_gravity="center_horizontal" />
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"

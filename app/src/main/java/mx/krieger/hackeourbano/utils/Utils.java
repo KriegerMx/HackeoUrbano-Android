@@ -1,6 +1,9 @@
 package mx.krieger.hackeourbano.utils;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.util.Log;
 
@@ -24,12 +27,23 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 
 import mx.krieger.hackeourbano.R;
+import mx.krieger.hackeourbano.fragment.HomeFragment;
+import mx.krieger.hackeourbano.object.UIPoint;
+import mx.krieger.hackeourbano.object.UITrail;
+import mx.krieger.hackeourbano.storage.GeoPointContract;
+import mx.krieger.hackeourbano.storage.PointDBOpenHelper;
 import mx.krieger.mapaton.clients.hackeoUrbanoAPI.HackeoUrbanoAPI;
 import mx.krieger.mapaton.clients.mapatonPublicAPI.MapatonPublicAPI;
+import mx.krieger.mapaton.clients.mapatonPublicAPI.model.TrailPointWrapper;
+import mx.krieger.mapaton.clients.mapatonPublicAPI.model.TrailPointsRequestParameter;
+import mx.krieger.mapaton.clients.mapatonPublicAPI.model.TrailPointsResult;
 
 public class Utils {
+    private static final int PAGE_SIZE = 50;
 
     public static MapatonPublicAPI getMapatonPublicAPI(){
         MapatonPublicAPI.Builder builder = new MapatonPublicAPI.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), new HttpRequestInitializer() {
@@ -139,5 +153,99 @@ public class Utils {
             colors[i] = Color.HSVToColor(hsv);
         }
         return colors;
+    }
+
+    public static List<UIPoint> getTrailPointsFromLocalStorage(Context context, long trailID) {
+        PointDBOpenHelper dbHelper = new PointDBOpenHelper(context);
+        SQLiteDatabase readableDB = dbHelper.getReadableDatabase();
+
+        String[] projection = {
+                GeoPointContract.GeoPointEntry._ID,
+                GeoPointContract.GeoPointEntry.COLUMN_NAME_LATITUDE,
+                GeoPointContract.GeoPointEntry.COLUMN_NAME_LONGITUDE
+        };
+        String sel = GeoPointContract.GeoPointEntry.COLUMN_NAME_TRAIL + " LIKE ?";
+        String[] selArgs = { String.valueOf(trailID) };
+        String sortOrder = GeoPointContract.GeoPointEntry._ID + " ASC";
+
+        Cursor cursor = readableDB.query(
+                GeoPointContract.GeoPointEntry.TABLE_NAME,
+                projection,
+                sel,
+                selArgs,
+                null,
+                null,
+                sortOrder
+        );
+
+        List<UIPoint> points = new ArrayList<>();
+        cursor.moveToFirst();
+        if(cursor.getCount() > 0) {
+            do {
+                UIPoint point = new UIPoint();
+                point.latitude = (cursor.getDouble(cursor.getColumnIndexOrThrow(GeoPointContract.GeoPointEntry.COLUMN_NAME_LATITUDE)));
+                point.longitude = (cursor.getDouble(cursor.getColumnIndexOrThrow(GeoPointContract.GeoPointEntry.COLUMN_NAME_LONGITUDE)));
+                points.add(point);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        readableDB.close();
+
+        dbHelper.close();
+        return points;
+    }
+
+    public static List<UIPoint> getTrailPoints(Context context, long trailId) throws IOException {
+        List<UIPoint> points = getTrailPointsFromLocalStorage(context, trailId);
+
+        if(points.size() == 0){
+            points = new ArrayList<>();
+
+            //LOOP IN OTHER TO GET ALL POINTS
+            MapatonPublicAPI mAPI = getMapatonPublicAPI();
+            TrailPointsRequestParameter request = new TrailPointsRequestParameter();
+            String serverCursor = null;
+            boolean hasMorePoints = true;
+            points = new ArrayList<>();
+            while(hasMorePoints) {
+                request.setCursor(serverCursor);
+                request.setNumberOfElements(PAGE_SIZE);
+                request.setTrailId(trailId);
+                TrailPointsResult resp = mAPI.getTrailSnappedPoints(request).execute();
+                List<TrailPointWrapper> newPoints = resp.getPoints();
+
+                if(newPoints != null) {
+                    for(TrailPointWrapper wrapper : newPoints) {
+                        UIPoint point = new UIPoint(wrapper.getLocation().getLatitude(),
+                                wrapper.getLocation().getLongitude());
+                        points.add(point);
+                    }
+                    serverCursor = resp.getCursor();
+                    if(newPoints.size() < PAGE_SIZE)
+                        hasMorePoints = false;
+                }else
+                    hasMorePoints = false;
+            }
+
+            //STORE ALL POINTS ON LOCAL DB
+            PointDBOpenHelper dbHelper = new PointDBOpenHelper(context);
+            SQLiteDatabase writableDatabase = dbHelper.getWritableDatabase();
+            for(UIPoint point : points)
+                storePointOnDB(writableDatabase, trailId, point);
+            writableDatabase.close();
+            dbHelper.close();
+        }
+        return points;
+    }
+
+    public static boolean storePointOnDB(SQLiteDatabase writableDatabase, long trailId, UIPoint point){
+        ContentValues values = new ContentValues();
+        values.put(GeoPointContract.GeoPointEntry.COLUMN_NAME_TRAIL, trailId);
+        values.put(GeoPointContract.GeoPointEntry.COLUMN_NAME_LATITUDE, point.latitude);
+        values.put(GeoPointContract.GeoPointEntry.COLUMN_NAME_LONGITUDE, point.longitude);
+
+        long newRowId = writableDatabase.insert(GeoPointContract.GeoPointEntry.TABLE_NAME, null, values);
+        return newRowId != -1;
     }
 }

@@ -19,8 +19,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mx.krieger.hackeourbano.R;
+import mx.krieger.hackeourbano.activity.TrailDetailActivity;
 import mx.krieger.hackeourbano.adapter.GenericListAdapter;
+import mx.krieger.hackeourbano.adapter.RankingListAdapter;
 import mx.krieger.hackeourbano.object.UISimpleListElement;
+import mx.krieger.hackeourbano.object.UITrail;
 import mx.krieger.hackeourbano.utils.Utils;
 import mx.krieger.internal.commons.androidutils.adapter.UpdateableAdapter;
 import mx.krieger.internal.commons.androidutils.fragment.NavDrawerFragment;
@@ -47,6 +50,12 @@ public class RankingFragment extends NavDrawerFragment implements AsyncTaskRecyc
         atrv.init(ph, loader, new AsyncTaskRecyclerView.TaskEventBundle(this, null));
 
         return v;
+    }
+
+    @Override
+    public void onStop() {
+        atrv.cancelAsyncTask();
+        super.onStop();
     }
 
     @Override
@@ -82,7 +91,10 @@ public class RankingFragment extends NavDrawerFragment implements AsyncTaskRecyc
                 for(RouteStatsWrapper currentElement : rawData){
                     UISimpleListElement uiElement = new UISimpleListElement();
                     uiElement.id = currentElement.getId();
+                    uiElement.originName = currentElement.getOriginStation();
+                    uiElement.destinationName = currentElement.getDestinyStation();
                     uiElement.title = currentElement.getOriginStation() + " - " + currentElement.getDestinyStation();
+                    uiElement.rating = currentElement.getRating();
                     data.add(uiElement);
                 }
                 result.data = data;
@@ -97,11 +109,17 @@ public class RankingFragment extends NavDrawerFragment implements AsyncTaskRecyc
 
     @Override
     public UpdateableAdapter buildAdapter(ArrayList<?> dataFromSuccessfulTask) {
-        return new GenericListAdapter((ArrayList<UISimpleListElement>) dataFromSuccessfulTask, this);
+        return new RankingListAdapter((ArrayList<UISimpleListElement>) dataFromSuccessfulTask, this);
     }
 
     @Override
     public void onClick(View v) {
-
+        switch (v.getId()){
+            case R.id.view_list_ranking:
+                UISimpleListElement tag = (UISimpleListElement) v.getTag();
+                Intent i = new Intent(getContext(), TrailDetailActivity.class);
+                i.putExtra(TrailDetailActivity.EXTRA_TRAIL, tag);
+                break;
+        }
     }
 }

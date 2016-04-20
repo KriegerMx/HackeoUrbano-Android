@@ -2,7 +2,6 @@ package mx.krieger.hackeourbano.fragment;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.os.AsyncTask;
@@ -42,23 +41,17 @@ import mx.krieger.hackeourbano.object.UIPoint;
 import mx.krieger.hackeourbano.object.UISimpleListElement;
 import mx.krieger.hackeourbano.object.UITrail;
 import mx.krieger.hackeourbano.storage.GeoPointContract;
-import mx.krieger.hackeourbano.storage.PointDBOpenHelper;
 import mx.krieger.hackeourbano.utils.Properties;
 import mx.krieger.hackeourbano.utils.Utils;
 import mx.krieger.internal.commons.androidutils.adapter.UpdateableAdapter;
 import mx.krieger.internal.commons.androidutils.fragment.NavDrawerFragment;
 import mx.krieger.internal.commons.androidutils.view.AsyncTaskRecyclerView;
-import mx.krieger.mapaton.clients.mapatonPublicAPI.MapatonPublicAPI;
 import mx.krieger.mapaton.clients.mapatonPublicAPI.model.NearTrails;
-import mx.krieger.mapaton.clients.mapatonPublicAPI.model.TrailPointWrapper;
-import mx.krieger.mapaton.clients.mapatonPublicAPI.model.TrailPointsRequestParameter;
-import mx.krieger.mapaton.clients.mapatonPublicAPI.model.TrailPointsResult;
 
 public class HomeFragment extends NavDrawerFragment implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks, //GoogleMap.OnCameraChangeListener,
         GoogleApiClient.OnConnectionFailedListener, AsyncTaskRecyclerView.TaskEventHandler, View.OnClickListener, GoogleMap.OnCameraChangeListener {
     private static final float MINIMUM_ZOOM = 15;
-    private static final int PAGE_SIZE = 50;
 
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
@@ -289,48 +282,7 @@ public class HomeFragment extends NavDrawerFragment implements OnMapReadyCallbac
 
                         if(runningTask.isCancelled()) return result;
 
-                        List<UIPoint> points = getTrailPointsFromLocalStorage(context, uiTrail);
-
-                        if(points.size() == 0){
-                            points = new ArrayList<>();
-
-                            //LOOP IN OTHER TO GET ALL POINTS
-                            MapatonPublicAPI mAPI = Utils.getMapatonPublicAPI();
-                            TrailPointsRequestParameter request = new TrailPointsRequestParameter();
-                            String serverCursor = null;
-                            boolean hasMorePoints = true;
-                            points = new ArrayList<>();
-                            while(hasMorePoints) {
-                                request.setCursor(serverCursor);
-                                request.setNumberOfElements(PAGE_SIZE);
-                                request.setTrailId(uiTrail.id);
-                                TrailPointsResult resp = mAPI.getTrailSnappedPoints(request).execute();
-                                List<TrailPointWrapper> newPoints = resp.getPoints();
-
-                                if(newPoints != null) {
-                                    for(TrailPointWrapper wrapper : newPoints) {
-                                        UIPoint point = new UIPoint(wrapper.getLocation().getLatitude(),
-                                                wrapper.getLocation().getLongitude());
-                                        points.add(point);
-                                    }
-                                    serverCursor = resp.getCursor();
-                                    if(newPoints.size() < PAGE_SIZE)
-                                        hasMorePoints = false;
-                                }else
-                                    hasMorePoints = false;
-                                if(runningTask.isCancelled()) return result;
-                            }
-
-                            //STORE ALL POINTS ON LOCAL DB
-                            PointDBOpenHelper dbHelper = new PointDBOpenHelper(context);
-                            SQLiteDatabase writableDatabase = dbHelper.getWritableDatabase();
-                            for(UIPoint point : points)
-                                storePointOnDB(writableDatabase, uiTrail.id, point);
-                            writableDatabase.close();
-                            dbHelper.close();
-                            if(runningTask.isCancelled()) return result;
-                        }
-                        uiTrail.points = points;
+                        uiTrail.points = Utils.getTrailPoints(context, uiTrail.id);
                         trailList.add(uiTrail);
                         data.add(element);
 
@@ -352,57 +304,6 @@ public class HomeFragment extends NavDrawerFragment implements OnMapReadyCallbac
             result.errorMessage = Utils.manageAPIException(getContext(), e);
         }
         return result;
-    }
-
-    private static List<UIPoint> getTrailPointsFromLocalStorage(Context context, UITrail uiTrail) {
-        PointDBOpenHelper dbHelper = new PointDBOpenHelper(context);
-        SQLiteDatabase readableDB = dbHelper.getReadableDatabase();
-
-        String[] projection = {
-                GeoPointContract.GeoPointEntry._ID,
-                GeoPointContract.GeoPointEntry.COLUMN_NAME_LATITUDE,
-                GeoPointContract.GeoPointEntry.COLUMN_NAME_LONGITUDE
-        };
-        String sel = GeoPointContract.GeoPointEntry.COLUMN_NAME_TRAIL + " LIKE ?";
-        String[] selArgs = { String.valueOf(uiTrail.id) };
-        String sortOrder = GeoPointContract.GeoPointEntry._ID + " ASC";
-
-        Cursor cursor = readableDB.query(
-                GeoPointContract.GeoPointEntry.TABLE_NAME,
-                projection,
-                sel,
-                selArgs,
-                null,
-                null,
-                sortOrder
-        );
-
-        List<UIPoint> points = new ArrayList<>();
-        cursor.moveToFirst();
-        if(cursor.getCount() > 0) {
-            do {
-                UIPoint point = new UIPoint();
-                point.latitude = (cursor.getDouble(cursor.getColumnIndexOrThrow(GeoPointContract.GeoPointEntry.COLUMN_NAME_LATITUDE)));
-                point.longitude = (cursor.getDouble(cursor.getColumnIndexOrThrow(GeoPointContract.GeoPointEntry.COLUMN_NAME_LONGITUDE)));
-                points.add(point);
-            } while (cursor.moveToNext());
-        }
-
-        cursor.close();
-        readableDB.close();
-
-        dbHelper.close();
-        return points;
-    }
-
-    private static boolean storePointOnDB(SQLiteDatabase writableDatabase, long trailId, UIPoint point){
-        ContentValues values = new ContentValues();
-        values.put(GeoPointContract.GeoPointEntry.COLUMN_NAME_TRAIL, trailId);
-        values.put(GeoPointContract.GeoPointEntry.COLUMN_NAME_LATITUDE, point.latitude);
-        values.put(GeoPointContract.GeoPointEntry.COLUMN_NAME_LONGITUDE, point.longitude);
-
-        long newRowId = writableDatabase.insert(GeoPointContract.GeoPointEntry.TABLE_NAME, null, values);
-        return newRowId != -1;
     }
 
     @Override

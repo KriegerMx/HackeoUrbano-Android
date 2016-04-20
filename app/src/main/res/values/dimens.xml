@@ -26,4 +26,9 @@
     <dimen name="app_btn_solid_padding_horizontal">16dp</dimen>
 
     <dimen name="app_drawer_header_padding_top">0dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="act_trail_detail_map_height">120dp</dimen>
 </resources>

@@ -1,6 +1,8 @@
 package mx.krieger.hackeourbano.object;
 
-public class UIPoint {
+import java.io.Serializable;
+
+public class UIPoint implements Serializable {
     public double latitude;
     public double longitude;
 

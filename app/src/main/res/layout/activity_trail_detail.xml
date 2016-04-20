@@ -1,0 +1,103 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <android.support.v7.widget.Toolbar
+        android:layout_alignParentTop="true"
+        android:id="@+id/act_trail_detail_toolbar"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_width="match_parent"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/AppBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_below="@id/act_trail_detail_toolbar"
+        android:layout_height="@dimen/act_trail_detail_map_height"
+        android:id="@+id/act_trail_detail_container_map">
+    </FrameLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/act_trail_detail_container_map">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/app_bg_white">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:padding="@dimen/app_keyline_text_small"
+                android:background="@color/app_menu_solid"
+                android:id="@+id/act_trail_detail_tv_origin"
+                android:textColor="@color/app_txt_light"
+                android:textSize="@dimen/app_text_medium"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/act_trail_detail_tv_origin"
+                android:padding="@dimen/app_keyline_text_small"
+                android:background="@color/app_primary_solid"
+                android:id="@+id/act_trail_detail_tv_destination"
+                android:textColor="@color/app_txt_light"
+                android:textSize="@dimen/app_text_medium"/>
+            <com.github.rahatarmanahmed.cpv.CircularProgressView
+                android:layout_below="@id/act_trail_detail_tv_destination"
+                android:id="@+id/act_trail_detail_cpv"
+                app:cpv_animAutostart="true"
+                app:cpv_color="@color/app_accent_primary_solid"
+                app:cpv_indeterminate="true"
+                style="@style/CircularProgressView.CenterTop" />
+            <TextView
+                android:layout_below="@id/act_trail_detail_tv_destination"
+                android:id="@+id/act_trail_detail_tv_label_type"
+                android:visibility="gone"
+                android:text="@string/act_trail_detail_label_type"
+                style="@style/Text_Label" />
+            <TextView
+                android:layout_below="@id/act_trail_detail_tv_label_type"
+                android:id="@+id/act_trail_detail_tv_type"
+                style="@style/Text_Info_Row" />
+            <TextView
+                android:layout_below="@id/act_trail_detail_tv_type"
+                android:id="@+id/act_trail_detail_tv_label_tariff"
+                android:visibility="gone"
+                android:text="@string/act_trail_detail_label_tariff"
+                style="@style/Text_Label" />
+            <TextView
+                android:layout_below="@id/act_trail_detail_tv_label_tariff"
+                android:id="@+id/act_trail_detail_tv_tariff"
+                style="@style/Text_Info_Row" />
+            <TextView
+                android:layout_below="@id/act_trail_detail_tv_tariff"
+                android:id="@+id/act_trail_detail_tv_label_rating"
+                android:visibility="gone"
+                android:text="@string/act_trail_detail_label_rating"
+                style="@style/Text_Label" />
+            <TextView
+                android:layout_below="@id/act_trail_detail_tv_label_rating"
+                android:id="@+id/act_trail_detail_tv_rating"
+                style="@style/Text_Info_Row" />
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/act_trail_detail_tv_rating"
+                android:id="@+id/act_trail_detail_rb"
+                android:layout_margin="@dimen/app_keyline_text_small"
+                android:isIndicator="true"
+                android:stepSize="1"
+                android:visibility="gone"
+                android:layout_gravity="center_horizontal" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:id="@+id/act_trail_detail_btn_rate"
+                android:layout_below="@id/act_trail_detail_rb"
+                android:text="@string/act_trail_detail_btn_rate"
+                android:layout_marginBottom="@dimen/app_keyline_text_small"
+                android:layout_centerHorizontal="true"/>
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

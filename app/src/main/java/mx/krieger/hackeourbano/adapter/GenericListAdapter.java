@@ -23,7 +23,7 @@ public class GenericListAdapter extends UpdateableAdapter<RecyclerView.ViewHolde
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_list_category, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_list_simple, parent, false);
         return new CategoryViewHolder(v, listener);
     }
 
@@ -58,7 +58,7 @@ public class GenericListAdapter extends UpdateableAdapter<RecyclerView.ViewHolde
         public CategoryViewHolder(View v, View.OnClickListener listener) {
             super(v);
             parent = v;
-            tvTitle = (TextView) v.findViewById(R.id.view_list_category_tv_title);
+            tvTitle = (TextView) v.findViewById(R.id.view_list_simple_tv_title);
             parent.setOnClickListener(listener);
         }
     }

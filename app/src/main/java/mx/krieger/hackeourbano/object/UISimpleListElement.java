@@ -1,6 +1,13 @@
 package mx.krieger.hackeourbano.object;
 
-public class UISimpleListElement {
+import java.io.Serializable;
+
+public class UISimpleListElement implements Serializable{
     public String title;
-    public Long id;
+    public long id;
+    public float rating;
+    public String originName;
+    public String destinationName;
+    public String branchName;
+    public int index;
 }

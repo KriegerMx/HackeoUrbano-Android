@@ -86,22 +86,18 @@
         <item name="android:textColor">@color/app_accent_primary_solid</item>
     </style>
 
-    <style name="Title.Accented.Category">
+    <style name="Title.Accented.ListElement">
         <item name="android:textStyle">normal</item>
-    </style>
-    <style name="Title.Formality">
-        <item name="android:textStyle">normal</item>
-        <item name="android:textSize">@dimen/app_text_medium</item>
-        <item name="android:paddingTop">0dp</item>
-        <item name="android:paddingLeft">@dimen/app_keyline_text_small</item>
-        <item name="android:paddingRight">@dimen/app_keyline_text_small</item>
-    </style>
-    <style name="Title.Formality.Small">
-        <item name="android:textSize">@dimen/app_text_small</item>
-        <item name="android:paddingBottom">0dp</item>
-        <item name="android:paddingTop">@dimen/app_keyline_text_small</item>
     </style>
 
+    <style name="Text_Label">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">@dimen/app_keyline_text_small</item>
+        <item name="android:textColor">@color/app_txt_dark</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/app_text_medium</item>
+    </style>
 
     <style name="Title.Light">
         <item name="android:textColor">@color/app_title_light</item>
@@ -182,16 +178,6 @@
         <item name="android:fillViewport">true</item>
     </style>
 
-
-
-    <style name="ScrollView_Formality">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">0dp</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:fillViewport">true</item>
-        <item name="android:background">@color/app_bg_gray</item>
-    </style>`
-
     <!-- WIDGETS -->
     <style name="NonSolid_Button">
         <item name="android:textColor">@color/app_accent_primary_solid</item>
@@ -256,13 +242,10 @@
         <item name="android:singleLine">true</item>
     </style>
 
-    <style name="LargeLine">
+    <style name="Text_Info_Row">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@color/app_bg_divider</item>
-        <item name="android:layout_marginLeft">-12dp</item>
-        <item name="android:layout_marginRight">-12dp</item>
-        <item name="android:paddingLeft">0dp</item>
-        <item name="android:paddingRight">0dp</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:padding">@dimen/app_keyline_text_small</item>
     </style>
 </resources>

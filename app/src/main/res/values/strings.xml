@@ -44,6 +44,12 @@
     <string name="error_zoom_too_low">El área de búsqueda es demasiado amplia, haz zoom para cargar los recorridos de una zona.</string>
     <string name="error_map_has_not_loaded">Por favor espera a que termine de cargar el mapa e intenta de nuevo</string>
     <string name="error_obtain_trail">Falló la obtención de uno de los recorridos</string>
+    <string name="error_obtain_trail_details">No fue posible obtener el recorrido debido al sig. error:\n</string>
+    <string name="error_navigation">Error de navegación, la pantalla necesita datos de entrada</string>
     <string name="frag_home_toggle_label_placeholder">Aún no se ha seleccionado un área</string>
+    <string name="act_trail_detail_label_rating">Calificación</string>
+    <string name="act_trail_detail_label_tariff">Tarifa Máxima</string>
+    <string name="act_trail_detail_label_type">Tipo de Transporte</string>
+    <string name="act_trail_detail_btn_rate">Evaluar el recorrido</string>
 
 </resources>
