@@ -88,7 +88,7 @@
                 android:isIndicator="true"
                 android:stepSize="1"
                 android:visibility="gone"
-                android:layout_gravity="center_horizontal" />
+                android:layout_centerHorizontal="true" />
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

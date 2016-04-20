@@ -22,6 +22,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.text.DecimalFormat;
+import java.util.List;
 
 import mx.krieger.hackeourbano.R;
 import mx.krieger.hackeourbano.object.UIPoint;
@@ -47,6 +48,9 @@ public class TrailDetailActivity extends AppCompatActivity implements OnMapReady
     private View btnRate;
     private UISimpleListElement inputTrail;
     private TrailDetailsGetterTask task;
+    private List<UIPoint> points;
+    private GoogleMap mMap;
+    private boolean trailHasBeenLoaded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +68,7 @@ public class TrailDetailActivity extends AppCompatActivity implements OnMapReady
             TextView tvOrigin = (TextView) findViewById(R.id.act_trail_detail_tv_origin);
             TextView tvDestination = (TextView) findViewById(R.id.act_trail_detail_tv_destination);
             loader = findViewById(R.id.act_trail_detail_cpv);
-            tvTariffLabel = (TextView) findViewById(R.id.act_trail_detail_tv_label_rating);
+            tvTariffLabel = (TextView) findViewById(R.id.act_trail_detail_tv_label_tariff);
             tvTariff = (TextView) findViewById(R.id.act_trail_detail_tv_tariff);
             tvTypeLabel = (TextView) findViewById(R.id.act_trail_detail_tv_label_type);
             tvType = (TextView) findViewById(R.id.act_trail_detail_tv_type);
@@ -111,17 +115,28 @@ public class TrailDetailActivity extends AppCompatActivity implements OnMapReady
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        if(points != null){
+            showTrailOnMap();
+        }
+    }
+
+    private void showTrailOnMap() {
+        if(trailHasBeenLoaded)
+            return;
+        trailHasBeenLoaded = true;
         PolylineOptions polyline = new PolylineOptions();
         LatLngBounds.Builder boundBuilder = LatLngBounds.builder();
 
-        /*for (int i = 0, size = inputTrail.points.size(); i < size; i++){
-            UIPoint pos = inputTrail.points.get(i);
+        for (int i = 0, size = points.size(); i < size; i++){
+            UIPoint pos = points.get(i);
             LatLng ll = new LatLng(pos.latitude, pos.longitude);
             polyline.add(ll);
             boundBuilder.include(ll);
-        }*/
+        }
         int padding = (int) getResources().getDimension(R.dimen.app_keyline_text_small);
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(boundBuilder.build(), padding));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(boundBuilder.build(), padding));
+        mMap.addPolyline(polyline);
     }
 
 
@@ -134,13 +149,15 @@ public class TrailDetailActivity extends AppCompatActivity implements OnMapReady
             String errorMsg = null;
             Context context = null;
             try {
+                long param = params[0];
                 context = getApplicationContext();
                 MapatonPublicAPI mAPI = Utils.getMapatonPublicAPI();
-                trailDetails = mAPI.getTrailDetails(params[0]).execute();
+                trailDetails = mAPI.getTrailDetails(param).execute();
 
                 HackeoUrbanoAPI hAPI = Utils.getHackeoUrbanoPublicAPI();
-                trailStats = hAPI.getStats(params[0]).execute();
+                trailStats = hAPI.getStats(param).execute();
 
+                points = Utils.getTrailPoints(context, param);
             } catch (Exception e) {
                 errorMsg = Utils.manageAPIException(context, e);
             }
@@ -153,18 +170,22 @@ public class TrailDetailActivity extends AppCompatActivity implements OnMapReady
             if(error!=null){
                 Toast.makeText(getApplicationContext(), getString(R.string.error_obtain_trail) + error, Toast.LENGTH_LONG).show();
             }else{
+                if(mMap != null)
+                    showTrailOnMap();
+
                 tvTypeLabel.setVisibility(View.VISIBLE);
                 tvType.setVisibility(View.VISIBLE);
                 tvType.setText(trailDetails.getTransportType());
 
                 tvTariffLabel.setVisibility(View.VISIBLE);
                 tvTariff.setVisibility(View.VISIBLE);
-                DecimalFormat df = new DecimalFormat("0.##");
+                DecimalFormat df = new DecimalFormat("0.00");
                 String s = df.format(trailDetails.getMaxTariff());
-                tvTariff.setText(s);
+                tvTariff.setText("$" + s);
 
                 tvRatingLabel.setVisibility(View.VISIBLE);
                 if(trailStats.getRating() > 0) {
+                    rbRating.setVisibility(View.VISIBLE);
                     rbRating.setRating(trailStats.getRating());
 
                     Drawable drawable = rbRating.getProgressDrawable();

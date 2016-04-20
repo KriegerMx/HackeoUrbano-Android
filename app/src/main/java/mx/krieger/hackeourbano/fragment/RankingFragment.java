@@ -119,6 +119,7 @@ public class RankingFragment extends NavDrawerFragment implements AsyncTaskRecyc
                 UISimpleListElement tag = (UISimpleListElement) v.getTag();
                 Intent i = new Intent(getContext(), TrailDetailActivity.class);
                 i.putExtra(TrailDetailActivity.EXTRA_TRAIL, tag);
+                startActivity(i);
                 break;
         }
     }
