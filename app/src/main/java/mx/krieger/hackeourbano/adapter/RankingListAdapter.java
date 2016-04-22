@@ -3,6 +3,7 @@ package mx.krieger.hackeourbano.adapter;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.support.v7.widget.AppCompatRatingBar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,14 +62,14 @@ public class RankingListAdapter extends UpdateableAdapter<RecyclerView.ViewHolde
 
     private class RankingViewHolder extends RecyclerView.ViewHolder {
         public TextView tvTitle;
-        public RatingBar rbRating;
+        public AppCompatRatingBar rbRating;
         public View parent;
 
         public RankingViewHolder(View v, View.OnClickListener listener) {
             super(v);
             parent = v;
             tvTitle = (TextView) v.findViewById(R.id.view_list_ranking_tv_title);
-            rbRating = (RatingBar) v.findViewById(R.id.view_list_ranking_rb);
+            rbRating = (AppCompatRatingBar) v.findViewById(R.id.view_list_ranking_rb);
             parent.setOnClickListener(listener);
         }
     }

@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatRatingBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,7 +47,7 @@ public class TrailDetailActivity extends AppCompatActivity implements OnMapReady
     private TextView tvType;
     private TextView tvRatingLabel;
     private TextView tvRating;
-    private RatingBar rbRating;
+    private AppCompatRatingBar rbRating;
     private View btnRate;
     private UISimpleListElement inputTrail;
     private TrailDetailsGetterTask task;
@@ -76,7 +77,7 @@ public class TrailDetailActivity extends AppCompatActivity implements OnMapReady
             tvType = (TextView) findViewById(R.id.act_trail_detail_tv_type);
             tvRatingLabel = (TextView) findViewById(R.id.act_trail_detail_tv_label_rating);
             tvRating = (TextView) findViewById(R.id.act_trail_detail_tv_rating);
-            rbRating = (RatingBar) findViewById(R.id.act_trail_detail_rb);
+            rbRating = (AppCompatRatingBar) findViewById(R.id.act_trail_detail_rb);
             btnRate = findViewById(R.id.act_trail_detail_btn_rate);
 
             setSupportActionBar(toolbar);
@@ -123,7 +124,13 @@ public class TrailDetailActivity extends AppCompatActivity implements OnMapReady
 
     @Override
     public void onClick(View v) {
-
+        switch (v.getId()){
+            case R.id.act_trail_detail_btn_rate:
+                Intent i = new Intent(getApplicationContext(), FeedbackActivity.class);
+                i.putExtra(FeedbackActivity.EXTRA_TRAIL_ID, inputTrail.id);
+                startActivity(i);
+                break;
+        }
     }
 
     @Override
@@ -205,7 +212,7 @@ public class TrailDetailActivity extends AppCompatActivity implements OnMapReady
                     drawable.setColorFilter(getResources().getColor(R.color.app_accent_secondary_solid), PorterDuff.Mode.SRC_ATOP);
                 }else {
                     tvRating.setVisibility(View.VISIBLE);
-                    tvRating.setText("Este recorrido no ha sido calificado aún.");
+                    tvRating.setText(R.string.act_trail_detail_not_yet_rated);
                 }
 
                 btnRate.setVisibility(View.VISIBLE);

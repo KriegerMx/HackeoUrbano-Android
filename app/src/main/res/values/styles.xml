@@ -248,4 +248,24 @@
         <item name="android:visibility">gone</item>
         <item name="android:padding">@dimen/app_keyline_text_small</item>
     </style>
+
+    <style name="RadioButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/app_txt_dark</item>
+        <item name="android:layout_marginLeft">@dimen/app_keyline_text_small</item>
+        <item name="android:layout_marginRight">@dimen/app_keyline_text_small</item>
+    </style>
+
+    <style name="Checkbox">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/app_txt_dark</item>
+        <item name="android:layout_marginLeft">@dimen/app_keyline_text_small</item>
+        <item name="android:layout_marginRight">@dimen/app_keyline_text_small</item>
+    </style>
+
+    <style name="Checkbox.WithBottomMargin">
+        <item name="android:layout_marginBottom">@dimen/app_keyline_text_small</item>
+    </style>
 </resources>

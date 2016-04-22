@@ -11,7 +11,7 @@
         android:layout_margin="0dp"
         android:textColor="@color/app_txt_dark"
         style="@style/Title.Accented.ListElement" />
-    <RatingBar
+    <android.support.v7.widget.AppCompatRatingBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/view_list_ranking_rb"
