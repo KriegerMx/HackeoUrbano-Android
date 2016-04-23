@@ -88,5 +88,11 @@
     <string name="act_feedback_cb_rules_5">El chofer estaba texteando</string>
     <string name="act_feedback_cb_rules_6">Bloquear la vía pública</string>
     <string name="act_feedback_cb_rules_7">Conducir con la puerta abierta</string>
+    <string name="act_feedback_error_select_type">Debes elegir un tipo de transporte</string>
+    <string name="act_feedback_error_select_time">Debes seleccionar el horario</string>
+    <string name="act_feedback_error_select_fullness">Debes elegir un nivel de aglomeración</string>
+    <string name="act_feedback_error_select_rating">Debes calificar el recorrido</string>
+    <string name="act_feedback_success">Evaluación enviada con éxito</string>
+    <string name="app_error_preffix">No fue posible completar el proceso debido al siguiente error:\n</string>
 
 </resources>

@@ -48,6 +48,7 @@ dependencies {
 
     //THIRD-PARTY
     compile 'com.github.rahatarmanahmed:circularprogressview:2.3.2'
+    compile 'com.wdullaer:materialdatetimepicker:2.3.0'
 
     //GOOGLE
     compile 'com.google.android.gms:play-services-location:8.4.0'

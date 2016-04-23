@@ -36,6 +36,9 @@ import mx.krieger.hackeourbano.object.UIPoint;
 import mx.krieger.hackeourbano.object.UITrail;
 import mx.krieger.hackeourbano.storage.GeoPointContract;
 import mx.krieger.hackeourbano.storage.PointDBOpenHelper;
+import mx.krieger.internal.commons.androidutils.fragment.GenericDialogFragment;
+import mx.krieger.internal.commons.androidutils.object.DefaultInflationAction;
+import mx.krieger.internal.commons.androidutils.object.DialogBuilder;
 import mx.krieger.mapaton.clients.hackeoUrbanoAPI.HackeoUrbanoAPI;
 import mx.krieger.mapaton.clients.mapatonPublicAPI.MapatonPublicAPI;
 import mx.krieger.mapaton.clients.mapatonPublicAPI.model.TrailPointWrapper;
@@ -247,5 +250,11 @@ public class Utils {
 
         long newRowId = writableDatabase.insert(GeoPointContract.GeoPointEntry.TABLE_NAME, null, values);
         return newRowId != -1;
+    }
+
+    public static GenericDialogFragment buildProgressDialog() {
+        DialogBuilder builder = new DialogBuilder();
+        builder.command = new DefaultInflationAction();
+        return GenericDialogFragment.newInstance(R.layout.dialog_progress, builder, R.style.AppTheme, false);
     }
 }

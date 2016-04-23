@@ -72,9 +72,8 @@ public class RankingFragment extends NavDrawerFragment implements AsyncTaskRecyc
     public AsyncTaskRecyclerView.ResultBundle performTask(AsyncTask runningTask, Object input) {
         AsyncTaskRecyclerView.ResultBundle result = new AsyncTaskRecyclerView.ResultBundle(
                 null, null, 0);
-        Context context;
+        Context context = getContext();
         try {
-            context = getContext();
             result = new AsyncTaskRecyclerView.ResultBundle(
                     getString(R.string.error_unknown), null, 0);
 
@@ -102,7 +101,7 @@ public class RankingFragment extends NavDrawerFragment implements AsyncTaskRecyc
             }
         } catch (Exception e) {
             e.printStackTrace();
-            result.errorMessage = Utils.manageAPIException(getContext(), e);
+            result.errorMessage = Utils.manageAPIException(context, e);
         }
         return result;
     }

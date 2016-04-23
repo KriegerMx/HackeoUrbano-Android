@@ -19,6 +19,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:focusable="true"
+                android:id="@+id/act_feedback_slave_focus"
+                android:focusableInTouchMode="true" />
+
             <TextView
                 android:text="@string/act_feedback_label_type"
                 style="@style/Text_Label" />
@@ -50,7 +57,7 @@
                 android:hint="@string/act_feedback_et_hint_time"
                 android:layout_marginLeft="@dimen/app_keyline_text_small"
                 android:layout_marginRight="@dimen/app_keyline_text_small"
-                android:id="@+id/act_feeback_et_time"/>
+                android:id="@+id/act_feedback_et_time"/>
 
             <TextView
                 android:text="@string/act_feedback_label_fullness"
@@ -85,19 +92,19 @@
                 android:text="@string/act_feedback_label_security"
                 style="@style/Text_Label" />
             <android.support.v7.widget.AppCompatCheckBox
-                android:id="@+id/act_feeback_cb_security_0"
+                android:id="@+id/act_feedback_cb_security_0"
                 android:text="@string/act_feedback_cb_security_0"
                 style="@style/Checkbox.WithBottomMargin" />
             <android.support.v7.widget.AppCompatCheckBox
-                android:id="@+id/act_feeback_cb_security_1"
+                android:id="@+id/act_feedback_cb_security_1"
                 android:text="@string/act_feedback_cb_security_1"
                 style="@style/Checkbox.WithBottomMargin" />
             <android.support.v7.widget.AppCompatCheckBox
-                android:id="@+id/act_feeback_cb_security_2"
+                android:id="@+id/act_feedback_cb_security_2"
                 android:text="@string/act_feedback_cb_security_2"
                 style="@style/Checkbox.WithBottomMargin" />
             <android.support.v7.widget.AppCompatCheckBox
-                android:id="@+id/act_feeback_cb_security_3"
+                android:id="@+id/act_feedback_cb_security_3"
                 android:text="@string/act_feedback_cb_security_3"
                 style="@style/Checkbox" />
 
@@ -105,23 +112,23 @@
                 android:text="@string/act_feedback_label_vehicle"
                 style="@style/Text_Label" />
             <android.support.v7.widget.AppCompatCheckBox
-                android:id="@+id/act_feeback_cb_vehicle_0"
+                android:id="@+id/act_feedback_cb_vehicle_0"
                 android:text="@string/act_feedback_cb_vehicle_0"
                 style="@style/Checkbox.WithBottomMargin" />
             <android.support.v7.widget.AppCompatCheckBox
-                android:id="@+id/act_feeback_cb_vehicle_1"
+                android:id="@+id/act_feedback_cb_vehicle_1"
                 android:text="@string/act_feedback_cb_vehicle_1"
                 style="@style/Checkbox.WithBottomMargin" />
             <android.support.v7.widget.AppCompatCheckBox
-                android:id="@+id/act_feeback_cb_vehicle_2"
+                android:id="@+id/act_feedback_cb_vehicle_2"
                 android:text="@string/act_feedback_cb_vehicle_2"
                 style="@style/Checkbox.WithBottomMargin" />
             <android.support.v7.widget.AppCompatCheckBox
-                android:id="@+id/act_feeback_cb_vehicle_3"
+                android:id="@+id/act_feedback_cb_vehicle_3"
                 android:text="@string/act_feedback_cb_vehicle_3"
                 style="@style/Checkbox.WithBottomMargin" />
             <android.support.v7.widget.AppCompatCheckBox
-                android:id="@+id/act_feeback_cb_vehicle_4"
+                android:id="@+id/act_feedback_cb_vehicle_4"
                 android:text="@string/act_feedback_cb_vehicle_4"
                 style="@style/Checkbox" />
 
@@ -129,35 +136,35 @@
                 android:text="@string/act_feedback_label_rules"
                 style="@style/Text_Label" />
             <android.support.v7.widget.AppCompatCheckBox
-                android:id="@+id/act_feeback_cb_rules_0"
+                android:id="@+id/act_feedback_cb_rules_0"
                 android:text="@string/act_feedback_cb_rules_0"
                 style="@style/Checkbox.WithBottomMargin" />
             <android.support.v7.widget.AppCompatCheckBox
-                android:id="@+id/act_feeback_cb_rules_1"
+                android:id="@+id/act_feedback_cb_rules_1"
                 android:text="@string/act_feedback_cb_rules_1"
                 style="@style/Checkbox.WithBottomMargin" />
             <android.support.v7.widget.AppCompatCheckBox
-                android:id="@+id/act_feeback_cb_rules_2"
+                android:id="@+id/act_feedback_cb_rules_2"
                 android:text="@string/act_feedback_cb_rules_2"
                 style="@style/Checkbox.WithBottomMargin" />
             <android.support.v7.widget.AppCompatCheckBox
-                android:id="@+id/act_feeback_cb_rules_3"
+                android:id="@+id/act_feedback_cb_rules_3"
                 android:text="@string/act_feedback_cb_rules_3"
                 style="@style/Checkbox.WithBottomMargin" />
             <android.support.v7.widget.AppCompatCheckBox
-                android:id="@+id/act_feeback_cb_rules_4"
+                android:id="@+id/act_feedback_cb_rules_4"
                 android:text="@string/act_feedback_cb_rules_4"
                 style="@style/Checkbox.WithBottomMargin" />
             <android.support.v7.widget.AppCompatCheckBox
-                android:id="@+id/act_feeback_cb_rules_5"
+                android:id="@+id/act_feedback_cb_rules_5"
                 android:text="@string/act_feedback_cb_rules_5"
                 style="@style/Checkbox.WithBottomMargin" />
             <android.support.v7.widget.AppCompatCheckBox
-                android:id="@+id/act_feeback_cb_rules_6"
+                android:id="@+id/act_feedback_cb_rules_6"
                 android:text="@string/act_feedback_cb_rules_6"
                 style="@style/Checkbox.WithBottomMargin" />
             <android.support.v7.widget.AppCompatCheckBox
-                android:id="@+id/act_feeback_cb_rules_7"
+                android:id="@+id/act_feedback_cb_rules_7"
                 android:text="@string/act_feedback_cb_rules_7"
                 style="@style/Checkbox" />
 
@@ -167,7 +174,7 @@
             <android.support.v7.widget.AppCompatRatingBar
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/act_feeback_rb"
+                android:id="@+id/act_feedback_rb"
                 android:layout_marginLeft="@dimen/app_keyline_text_small"
                 android:layout_marginRight="@dimen/app_keyline_text_small"
                 android:layout_gravity="center_horizontal"
@@ -190,7 +197,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/act_trail_detail_btn_rate"
+                android:id="@+id/act_feedback_btn_send"
                 android:layout_marginBottom="@dimen/app_vertical_padding_text_small"
                 android:text="@string/send"
                 android:layout_gravity="center_horizontal"/>
