@@ -1,17 +1,16 @@
 package mx.krieger.hackeourbano.activity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatRatingBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -23,7 +22,6 @@ import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 import mx.krieger.hackeourbano.R;
 import mx.krieger.hackeourbano.utils.Utils;
@@ -39,9 +37,9 @@ public class FeedbackActivity extends AppCompatActivity implements View.OnClickL
     private EditText etComments;
     private RadioGroup rgType;
     private RadioGroup rgFullness;
-    private CheckBox[] cbSecurity;
-    private CheckBox[] cbVehicle;
-    private CheckBox[] cbRules;
+    private AppCompatCheckBox[] cbSecurity;
+    private AppCompatCheckBox[] cbVehicle;
+    private AppCompatCheckBox[] cbRules;
     private AppCompatRatingBar rbRating;
     private DateTime time;
     private FeedbackTask task;
@@ -63,28 +61,28 @@ public class FeedbackActivity extends AppCompatActivity implements View.OnClickL
             etComments = (EditText) findViewById(R.id.act_feedback_et_comments);
             rgType = (RadioGroup) findViewById(R.id.act_feedback_rgroup_type);
             rgFullness = (RadioGroup) findViewById(R.id.act_feedback_rgroup_fullness);
-            cbSecurity = new CheckBox[]{
-                    (CheckBox) findViewById(R.id.act_feedback_cb_security_0),
-                    (CheckBox) findViewById(R.id.act_feedback_cb_security_1),
-                    (CheckBox) findViewById(R.id.act_feedback_cb_security_2),
-                    (CheckBox) findViewById(R.id.act_feedback_cb_security_3)
+            cbSecurity = new AppCompatCheckBox[]{
+                    (AppCompatCheckBox) findViewById(R.id.act_feedback_cb_security_0),
+                    (AppCompatCheckBox) findViewById(R.id.act_feedback_cb_security_1),
+                    (AppCompatCheckBox) findViewById(R.id.act_feedback_cb_security_2),
+                    (AppCompatCheckBox) findViewById(R.id.act_feedback_cb_security_3)
             };
-            cbVehicle = new CheckBox[]{
-                    (CheckBox) findViewById(R.id.act_feedback_cb_vehicle_0),
-                    (CheckBox) findViewById(R.id.act_feedback_cb_vehicle_1),
-                    (CheckBox) findViewById(R.id.act_feedback_cb_vehicle_2),
-                    (CheckBox) findViewById(R.id.act_feedback_cb_vehicle_3),
-                    (CheckBox) findViewById(R.id.act_feedback_cb_vehicle_4)
+            cbVehicle = new AppCompatCheckBox[]{
+                    (AppCompatCheckBox) findViewById(R.id.act_feedback_cb_vehicle_0),
+                    (AppCompatCheckBox) findViewById(R.id.act_feedback_cb_vehicle_1),
+                    (AppCompatCheckBox) findViewById(R.id.act_feedback_cb_vehicle_2),
+                    (AppCompatCheckBox) findViewById(R.id.act_feedback_cb_vehicle_3),
+                    (AppCompatCheckBox) findViewById(R.id.act_feedback_cb_vehicle_4)
             };
-            cbRules = new CheckBox[]{
-                    (CheckBox) findViewById(R.id.act_feedback_cb_rules_0),
-                    (CheckBox) findViewById(R.id.act_feedback_cb_rules_1),
-                    (CheckBox) findViewById(R.id.act_feedback_cb_rules_2),
-                    (CheckBox) findViewById(R.id.act_feedback_cb_rules_3),
-                    (CheckBox) findViewById(R.id.act_feedback_cb_rules_4),
-                    (CheckBox) findViewById(R.id.act_feedback_cb_rules_5),
-                    (CheckBox) findViewById(R.id.act_feedback_cb_rules_6),
-                    (CheckBox) findViewById(R.id.act_feedback_cb_rules_7)
+            cbRules = new AppCompatCheckBox[]{
+                    (AppCompatCheckBox) findViewById(R.id.act_feedback_cb_rules_0),
+                    (AppCompatCheckBox) findViewById(R.id.act_feedback_cb_rules_1),
+                    (AppCompatCheckBox) findViewById(R.id.act_feedback_cb_rules_2),
+                    (AppCompatCheckBox) findViewById(R.id.act_feedback_cb_rules_3),
+                    (AppCompatCheckBox) findViewById(R.id.act_feedback_cb_rules_4),
+                    (AppCompatCheckBox) findViewById(R.id.act_feedback_cb_rules_5),
+                    (AppCompatCheckBox) findViewById(R.id.act_feedback_cb_rules_6),
+                    (AppCompatCheckBox) findViewById(R.id.act_feedback_cb_rules_7)
             };
             rbRating = (AppCompatRatingBar) findViewById(R.id.act_feedback_rb);
             findViewById(R.id.act_feedback_btn_send).setOnClickListener(this);
@@ -185,10 +183,10 @@ public class FeedbackActivity extends AppCompatActivity implements View.OnClickL
                     return;
                 }
 
-                List<Integer> list = new ArrayList<>();
+                ArrayList<Integer> list = new ArrayList<>();
                 for(int i = 0, size = cbSecurity.length; i < size; i++){
-                    CheckBox cb = cbSecurity[i];
-                    if(cb.isSelected())
+                    AppCompatCheckBox cb = cbSecurity[i];
+                    if(cb.isChecked())
                         list.add(i);
                 }
                 if(list.size() > 0)
@@ -196,8 +194,8 @@ public class FeedbackActivity extends AppCompatActivity implements View.OnClickL
 
                 list = new ArrayList<>();
                 for(int i = 0, size = cbVehicle.length; i < size; i++){
-                    CheckBox cb = cbVehicle[i];
-                    if(cb.isSelected())
+                    AppCompatCheckBox cb = cbVehicle[i];
+                    if(cb.isChecked())
                         list.add(i);
                 }
                 if(list.size() > 0)
@@ -205,8 +203,8 @@ public class FeedbackActivity extends AppCompatActivity implements View.OnClickL
 
                 list = new ArrayList<>();
                 for(int i = 0, size = cbRules.length; i < size; i++){
-                    CheckBox cb = cbRules[i];
-                    if(cb.isSelected())
+                    AppCompatCheckBox cb = cbRules[i];
+                    if(cb.isChecked())
                         list.add(i);
                 }
                 if(list.size() > 0)

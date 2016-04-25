@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-import android.util.Log;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
@@ -14,14 +13,10 @@ import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestInitializer;
 import com.google.api.client.http.HttpResponseException;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
@@ -31,9 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mx.krieger.hackeourbano.R;
-import mx.krieger.hackeourbano.fragment.HomeFragment;
 import mx.krieger.hackeourbano.object.UIPoint;
-import mx.krieger.hackeourbano.object.UITrail;
 import mx.krieger.hackeourbano.storage.GeoPointContract;
 import mx.krieger.hackeourbano.storage.PointDBOpenHelper;
 import mx.krieger.internal.commons.androidutils.fragment.GenericDialogFragment;

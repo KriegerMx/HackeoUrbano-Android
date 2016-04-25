@@ -2,28 +2,20 @@ package mx.krieger.hackeourbano.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import mx.krieger.hackeourbano.R;
 import mx.krieger.hackeourbano.activity.TrailDetailActivity;
-import mx.krieger.hackeourbano.adapter.GenericListAdapter;
 import mx.krieger.hackeourbano.adapter.RankingListAdapter;
 import mx.krieger.hackeourbano.object.UISimpleListElement;
-import mx.krieger.hackeourbano.object.UITrail;
 import mx.krieger.hackeourbano.utils.Utils;
 import mx.krieger.internal.commons.androidutils.adapter.UpdateableAdapter;
 import mx.krieger.internal.commons.androidutils.fragment.NavDrawerFragment;

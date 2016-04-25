@@ -1,9 +1,7 @@
 package mx.krieger.hackeourbano.fragment;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -42,7 +40,6 @@ import mx.krieger.hackeourbano.adapter.GenericListAdapter;
 import mx.krieger.hackeourbano.object.UIPoint;
 import mx.krieger.hackeourbano.object.UISimpleListElement;
 import mx.krieger.hackeourbano.object.UITrail;
-import mx.krieger.hackeourbano.storage.GeoPointContract;
 import mx.krieger.hackeourbano.utils.Properties;
 import mx.krieger.hackeourbano.utils.Utils;
 import mx.krieger.internal.commons.androidutils.adapter.UpdateableAdapter;
